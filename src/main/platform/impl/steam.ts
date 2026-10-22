@@ -40,7 +40,12 @@ export function writeSteamLauncher(appImage: string): string {
     '  --setenv=XDG_CURRENT_DESKTOP="$XDG_CURRENT_DESKTOP" --setenv=SteamAppId="$SteamAppId" --setenv=SteamGameId="$SteamGameId" \\',
     '  bash -c "exec \\"$APP\\" --no-sandbox $EXTRA $ARGS >/tmp/xenith-launch.log 2>&1" || exec "$APP" --no-sandbox $EXTRA "$@"',
     'trap \'systemctl --user stop "$UNIT" 2>/dev/null\' TERM INT HUP',
-    'while systemctl --user is-active --quiet "$UNIT"; do sleep 1; done',
+    '# gamescope maps windows to games via the Steam reaper ancestor, which the systemd unit does not have:',
+    '# tag Xenith windows with STEAM_GAME so gaming mode focuses them (the app does this too).',
+    'APPID=$(grep -aoE "AppId=[0-9]+" /proc/$PPID/cmdline 2>/dev/null | head -1 | cut -d= -f2)',
+    'P=$PPID; for _ in 1 2 3 4 5; do [ -n "$APPID" ] && break; P=$(awk \'{print $4}\' /proc/$P/stat 2>/dev/null); [ -z "$P" ] && break; APPID=$(grep -aoE "AppId=[0-9]+" /proc/$P/cmdline 2>/dev/null | head -1 | cut -d= -f2); done',
+    'tag() { [ -n "$APPID" ] && command -v xprop >/dev/null || return; for w in $(timeout 3 xwininfo -root -children 2>/dev/null | grep -i \'"xenith\' | awk \'{print $1}\'); do timeout 3 xprop -id "$w" -f STEAM_GAME 32c -set STEAM_GAME "$APPID" 2>/dev/null; done; }',
+    'N=0; while systemctl --user is-active --quiet "$UNIT"; do [ $N -lt 60 ] && tag; N=$((N+1)); sleep 1; done',
     '',
   ].join('\n');
   try {

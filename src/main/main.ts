@@ -11,6 +11,7 @@ import { registerIpc } from './ipc';
 import { onEvent, emit } from './events';
 import { log, logWarn } from './log';
 import { withTimeout } from './util';
+import { tagSteamGameWindow } from './steam-window';
 
 // Fixed userData (<appData>/xenith) regardless of productName / dev vs packaged: the secure token
 // store lives in <userData>/secure and must stay where existing sign-ins put it.
@@ -89,7 +90,7 @@ function bootstrap() {
       },
     });
     const w = win;
-    w.once('ready-to-show', () => w.show());
+    w.once('ready-to-show', () => { w.show(); tagSteamGameWindow(w); });
 
     // Window-level shortcuts (only while Xenith is focused).
     w.webContents.on('before-input-event', (event, input) => {
