@@ -25,6 +25,12 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 // Launched by the Steam client on Linux (Steam Deck): the Chromium sandbox/zygote fails under Steam's launcher
 // (GPU process launch failed: error_code=1002). Shortcuts pass --no-sandbox; this covers hand-made shortcuts.
+// Linux: in gamescope (Steam Deck gaming mode) XDG_CURRENT_DESKTOP is not KDE, so Chromium falls back to the
+// 'basic' store and safeStorage is unavailable, which blocks sign-in. SteamOS runs a passwordless KWallet for
+// Steam in both modes; use it explicitly so tokens decrypt in desktop and gaming mode alike.
+if (process.platform === 'linux' && !process.argv.some((a) => a.startsWith('--password-store')) && existsSync('/usr/bin/kwalletd6')) {
+  app.commandLine.appendSwitch('password-store', 'kwallet6');
+}
 if (process.platform === 'linux' && (process.env.SteamAppId || process.env.SteamGameId) && !process.argv.includes('--no-sandbox')) {
   app.commandLine.appendSwitch('no-sandbox');
 }
