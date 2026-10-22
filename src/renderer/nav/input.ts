@@ -11,7 +11,7 @@ export interface InputHooks {
 }
 
 const BTN: Array<[number, PadAction | Dir]> = [
-  [0, 'a'], [1, 'b'], [2, 'x'], [3, 'y'], [4, 'lb'], [5, 'rb'], [8, 'view'], [9, 'menu'],
+  [0, 'a'], [1, 'b'], [2, 'x'], [3, 'y'], [4, 'lb'], [5, 'rb'], [6, 'lt'], [7, 'rt'], [8, 'view'], [9, 'menu'],
   [12, 'up'], [13, 'down'], [14, 'left'], [15, 'right'],
 ];
 const DIRS = new Set<string>(['up', 'down', 'left', 'right']);
@@ -39,7 +39,7 @@ export function startInput(h: InputHooks): () => void {
     const now = new Set<string>();
     for (const g of pads) {
       if (!g || !g.connected) continue;
-      for (const [i, k] of BTN) if (g.buttons[i]?.pressed) now.add(k);
+      for (const [i, k] of BTN) { const b = g.buttons[i]; if (b && (i === 6 || i === 7 ? b.value > 0.5 : b.pressed)) now.add(k); }
       const x = g.axes[0] ?? 0, y = g.axes[1] ?? 0;
       if (Math.abs(x) > STICK && Math.abs(x) > Math.abs(y)) now.add(x > 0 ? 'right' : 'left');
       else if (Math.abs(y) > STICK) now.add(y > 0 ? 'down' : 'up');
@@ -84,6 +84,8 @@ export function startInput(h: InputHooks): () => void {
     else if (text) handled = false;
     else if (k === 'q' || k === 'Q' || k === 'PageUp') dispatchAction('lb');
     else if (k === 'e' || k === 'E' || k === 'PageDown') dispatchAction('rb');
+    else if (k === '[' || k === 'z' || k === 'Z') dispatchAction('lt');
+    else if (k === ']' || k === 'c' || k === 'C') dispatchAction('rt');
     else if (k === 'x' || k === 'X') dispatchAction('x');
     else if (k === 'y' || k === 'Y') dispatchAction('y');
     else if (k === 'm' || k === 'M') dispatchAction('menu');

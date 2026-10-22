@@ -165,7 +165,9 @@ export class SessionManager {
         const code = String(st?.errorDetails?.code ?? 'Failed'), msg = String(st?.errorDetails?.message ?? '');
         // WNSError 'WaitingForServerToRegister': the console is not registered with Xbox services (off, energy saving, offline, booting).
         const offline = s.kind === 'home' && /WaitingForServerToRegister|ErrorCallingWNS/i.test(code + ' ' + msg);
-        throw new SessionFail(BUSY.test(code) || BUSY.test(msg) ? 'console_busy' : offline ? 'console_unreachable' : 'provision_failed', `${code}${msg ? ': ' + msg : ''}`);
+        // SigninBlockedByPasswordPrompt: the console profile asks for a password/PIN on sign-in, remote play cannot start.
+        const locked = s.kind === 'home' && /SigninBlocked|PasswordPrompt/i.test(code + ' ' + msg);
+        throw new SessionFail(BUSY.test(code) || BUSY.test(msg) ? 'console_busy' : locked ? 'console_signin_blocked' : offline ? 'console_unreachable' : 'provision_failed', `${code}${msg ? ': ' + msg : ''}`);
       }
       if (state === 'ReadyToConnect' && !connected) {
         await api.connect(b, p, await auth.getTransferToken(), s.abort.signal);

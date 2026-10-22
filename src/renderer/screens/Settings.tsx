@@ -24,8 +24,8 @@ export function Settings() {
   const step = (d: 1 | -1) => { cameFromNav.current = true; cycleSection(d); };
 
   useNavLayer({
-    lb: () => { step(-1); return true; },
-    rb: () => { step(1); return true; },
+    lt: () => { step(-1); return true; },
+    rt: () => { step(1); return true; },
     b: () => {
       const inMain = mainRef.current?.contains(document.activeElement);
       if (inMain) { focusById(`sec-${current}`); return true; }
@@ -35,7 +35,7 @@ export function Settings() {
   });
   useScreenFocus('settings');
 
-  // After LB/RB keep the gamepad user on the section list, on the new section.
+  // After LT/RT keep the gamepad user on the section list, on the new section.
   useEffect(() => {
     if (cameFromNav.current) { cameFromNav.current = false; focusById(`sec-${current}`); }
     mainRef.current?.scrollTo({ top: 0 });
@@ -74,9 +74,9 @@ export function Settings() {
           </header>
           {deck ? <div className="dlist-wrap"><DeckRows rows={rows} /></div> : <DesktopRows rows={rows} />}
         </div>
-        {!deck && <HintBar hints={[{ k: 'lbrb', label: s.hints.otherSection }, { k: 'b', label: s.hints.back }]} />}
+        {!deck && <HintBar hints={[{ k: 'ltrt', label: s.hints.otherSection }, { k: 'lbrb', label: s.hints.otherScreen }, { k: 'b', label: s.hints.back }]} />}
       </main>
-      {deck && <HintBar hints={[{ k: 'lr', label: s.hints.change }, { k: 'b', label: s.hints.back }]} />}
+      {deck && <HintBar hints={[{ k: 'lr', label: s.hints.change }, { k: 'ltrt', label: s.hints.otherSection }, { k: 'lbrb', label: s.hints.otherScreen }, { k: 'b', label: s.hints.back }]} />}
     </div>
   );
 }

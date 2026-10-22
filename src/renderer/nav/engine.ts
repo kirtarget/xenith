@@ -2,7 +2,7 @@
 // Layers (screens, sheets, modals) register handlers; the top-most modal layer also scopes focus.
 
 export type Dir = 'up' | 'down' | 'left' | 'right';
-export type PadAction = 'a' | 'b' | 'x' | 'y' | 'lb' | 'rb' | 'menu' | 'view';
+export type PadAction = 'a' | 'b' | 'x' | 'y' | 'lb' | 'rb' | 'lt' | 'rt' | 'menu' | 'view';
 export type Handler = () => boolean | void;   // return false to let lower layers handle it
 export type Handlers = Partial<Record<PadAction, Handler>>;
 

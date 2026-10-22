@@ -7,7 +7,7 @@ import { disconnect, dismissError, retry } from '../state/session';
 import { setState } from '../state/store';
 
 export const ERROR_TONE: Record<SessionErrorCode, Tone> = {
-  not_signed_in: 'warn', auth_expired: 'warn', no_console: 'warn', console_unreachable: 'bad', console_busy: 'warn',
+  not_signed_in: 'warn', auth_expired: 'warn', no_console: 'warn', console_unreachable: 'bad', console_busy: 'warn', console_signin_blocked: 'warn',
   provision_failed: 'bad', no_cloud_entitlement: 'idle', ice_failed: 'bad', stream_lost: 'bad', network: 'bad', unknown: 'bad',
 };
 
@@ -27,7 +27,7 @@ export function useErrorActions(code: SessionErrorCode) {
     auth_expired: signInAgain,
     no_console: () => { setState({ lastSessionError: null }); void loadConsoles(true); },
     console_unreachable: retry,
-    console_busy: retry,
+    console_busy: retry, console_signin_blocked: retry,
     provision_failed: retry,
     no_cloud_entitlement: () => { dismissError(); setState({ lastSessionError: null }); go('home'); },
     ice_failed: retry,

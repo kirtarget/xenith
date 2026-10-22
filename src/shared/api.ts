@@ -141,7 +141,7 @@ export interface StageEvent {
 
 export type SessionErrorCode =
   | 'not_signed_in' | 'auth_expired' | 'no_console' | 'console_unreachable'
-  | 'console_busy' | 'provision_failed' | 'no_cloud_entitlement' | 'ice_failed'
+  | 'console_busy' | 'console_signin_blocked' | 'provision_failed' | 'no_cloud_entitlement' | 'ice_failed'
   | 'stream_lost' | 'network' | 'unknown';
 
 export interface SessionError { code: SessionErrorCode; message: string }

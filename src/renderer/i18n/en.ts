@@ -16,7 +16,7 @@ export const en: Strings = {
   hints: {
     aria: 'Control hints',
     select: 'select', back: 'back', sections: 'sections', account: 'account', cancelConnect: 'cancel connection',
-    play: 'play', addSteam: 'add to Steam', search: 'search', otherSection: 'other section', change: 'change',
+    play: 'play', addSteam: 'add to Steam', search: 'search', otherSection: 'other section', otherScreen: 'other screen', change: 'change',
     connect: 'connect', changeConsole: 'change console', exit: 'exit', close: 'close', menu: 'settings',
   },
   power: {
@@ -115,6 +115,7 @@ export const en: Strings = {
     no_console: { title: 'No console found', body: 'This account has no console with Remote Play. On the Xbox open “Settings › Devices & connections › Remote features” and turn them on.', primary: 'Refresh list', secondary: 'Switch account' },
     console_unreachable: { title: 'The console did not respond', body: 'The Xbox is not connected to Xbox services. Check that it is in standby (not fully off or in energy-saving mode), online, and has Remote features on. If it just started, wait a minute.', primary: 'Try again', secondary: '' },
     console_busy: { title: 'The console is busy', body: 'Remote Play is already running on another device. Connecting here closes that session.', primary: 'Connect here', secondary: 'Cancel' },
+    console_signin_blocked: { title: 'The console is waiting for sign-in', body: 'The Xbox profile is protected by a password or passkey, so the console cannot sign in by itself. Sign in on the console, or set Settings → Account → Sign-in, security & passkey to "No barriers", then connect again.', primary: 'Try again', secondary: '' },
     provision_failed: { title: 'The stream did not start', body: 'The server answered but did not prepare a stream. Wait a minute and try again. If it repeats, restart the console by holding the Xbox button for 10 seconds.', primary: 'Try again', secondary: '' },
     no_cloud_entitlement: { title: 'Cloud is unavailable', body: 'Cloud gaming needs a Game Pass Ultimate subscription. Remote Play with your Xbox works without it.', primary: 'Go to console', secondary: '' },
     ice_failed: { title: 'The network blocks the stream', body: 'The console is ready but the connection did not establish. Away from home open port 9002 UDP and TCP for the Xbox on your router, or use IPv6.', primary: 'Retry', secondary: 'Check network' },

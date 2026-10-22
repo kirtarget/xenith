@@ -91,16 +91,16 @@ export function CoverCard({ name, meta, coverUrl, onOpen, navId, label }: {
 }
 
 // ─────────── KeyHint / HintBar ───────────
-export type HintKey = 'a' | 'b' | 'x' | 'y' | 'lb' | 'rb' | 'lbrb' | 'menu' | 'lr';
+export type HintKey = 'a' | 'b' | 'x' | 'y' | 'lb' | 'rb' | 'lbrb' | 'ltrt' | 'menu' | 'lr';
 export interface Hint { k: HintKey; label: string }
 
 function glyph(k: HintKey, input: 'mouse' | 'keyboard' | 'gamepad', deck: boolean, isDeckHw: boolean): string {
   const pad = input === 'gamepad' || (deck && input !== 'keyboard');
   if (pad) {
     const l = isDeckHw || deck ? 'L1' : 'LB', r = isDeckHw || deck ? 'R1' : 'RB';
-    return ({ a: 'A', b: 'B', x: 'X', y: 'Y', lb: l, rb: r, lbrb: `${l} ${r}`, menu: '☰', lr: '‹ ›' } as Record<HintKey, string>)[k];
+    return ({ a: 'A', b: 'B', x: 'X', y: 'Y', lb: l, rb: r, lbrb: `${l} ${r}`, ltrt: isDeckHw || deck ? 'L2 R2' : 'LT RT', menu: '☰', lr: '‹ ›' } as Record<HintKey, string>)[k];
   }
-  return ({ a: 'Enter', b: 'Esc', x: 'X', y: 'Y', lb: 'Q', rb: 'E', lbrb: 'Q E', menu: 'M', lr: '← →' } as Record<HintKey, string>)[k];
+  return ({ a: 'Enter', b: 'Esc', x: 'X', y: 'Y', lb: 'Q', rb: 'E', lbrb: 'Q E', ltrt: '[ ]', menu: 'M', lr: '← →' } as Record<HintKey, string>)[k];
 }
 
 export function KeyHint({ k, label }: Hint) {
