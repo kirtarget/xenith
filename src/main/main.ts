@@ -22,6 +22,12 @@ app.commandLine.appendSwitch('disable-background-timer-throttling');
 app.commandLine.appendSwitch('disable-backgrounding-occluded-windows');
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
+// Launched by the Steam client on Linux (Steam Deck): the Chromium sandbox/zygote fails under Steam's launcher
+// (GPU process launch failed: error_code=1002). Shortcuts pass --no-sandbox; this covers hand-made shortcuts.
+if (process.platform === 'linux' && (process.env.SteamAppId || process.env.SteamGameId) && !process.argv.includes('--no-sandbox')) {
+  app.commandLine.appendSwitch('no-sandbox');
+}
+
 const settings = new SettingsStore(); // synchronous read, before 'ready'
 setPlatformLayer(createPlatformLayer({ getSettings: () => settings.get() }) as any);
 try { platform.applyEarlySwitches(settings.get()); } catch (e) { logWarn('platform.early_switches_failed', e); }

@@ -25,7 +25,9 @@ const quote = (p: string) => `"${p}"`;
 /** The executable Steam should start. Packaged: the installed exe / AppImage. Dev: electron + app path. */
 export function xenithLaunchTarget(): { exe: string; startDir: string; argsPrefix: string; packaged: boolean } {
   const env = process.env;
-  if (process.platform === 'linux' && env.APPIMAGE) return { exe: env.APPIMAGE, startDir: dirname(env.APPIMAGE), argsPrefix: '', packaged: true };
+  // Linux: Chromium's zygote/GPU process cannot start when launched by the Steam client (verified on Steam Deck,
+  // gaming mode: 'GPU process launch failed: error_code=1002'). Steam runs its own steamwebhelper with --no-sandbox too.
+  if (process.platform === 'linux' && env.APPIMAGE) return { exe: env.APPIMAGE, startDir: dirname(env.APPIMAGE), argsPrefix: '--no-sandbox ', packaged: true };
   if (process.platform === 'win32' && env.PORTABLE_EXECUTABLE_FILE) return { exe: env.PORTABLE_EXECUTABLE_FILE, startDir: dirname(env.PORTABLE_EXECUTABLE_FILE), argsPrefix: '', packaged: true };
   if (app.isPackaged) return { exe: process.execPath, startDir: dirname(process.execPath), argsPrefix: '', packaged: true };
   const appPath = app.getAppPath();

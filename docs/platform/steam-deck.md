@@ -72,3 +72,12 @@ decodes H.264 up to 4K in hardware.
   "unknown".
 - Steam rewrites `shortcuts.vdf` when it exits; add shortcuts while Steam is closed or restart it immediately after.
 - The AppImage does not self-update.
+
+
+## Launched from Steam: `--no-sandbox` (verified 2026-10-22, Steam Deck OLED, gaming mode)
+When the Steam client launches Xenith, Chromium's zygote/GPU process fails to start
+(`GPU process launch failed: error_code=1002` → `GPU process isn't usable. Goodbye.`). The same AppImage starts fine
+from a terminal, even through Steam's `reaper`/`steam-launch-wrapper` — the trigger is the Steam client itself.
+With `--no-sandbox` it starts normally (Steam runs its own steamwebhelper with `--no-sandbox` as well).
+Xenith's "Add to Steam" puts `--no-sandbox` into the shortcut's launch options, and the app also enables it when it
+detects `SteamAppId`/`SteamGameId` on Linux. For a hand-made shortcut add `--no-sandbox` to Launch Options.

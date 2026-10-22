@@ -13,3 +13,4 @@ secrets/
 logs/
 .ui-shots/
 dist-test/
+release-ci/
