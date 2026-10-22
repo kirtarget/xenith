@@ -74,10 +74,14 @@ decodes H.264 up to 4K in hardware.
 - The AppImage does not self-update.
 
 
-## Launched from Steam: `--no-sandbox` (verified 2026-10-22, Steam Deck OLED, gaming mode)
-When the Steam client launches Xenith, Chromium's zygote/GPU process fails to start
-(`GPU process launch failed: error_code=1002` → `GPU process isn't usable. Goodbye.`). The same AppImage starts fine
-from a terminal, even through Steam's `reaper`/`steam-launch-wrapper` — the trigger is the Steam client itself.
-With `--no-sandbox` it starts normally (Steam runs its own steamwebhelper with `--no-sandbox` as well).
-Xenith's "Add to Steam" puts `--no-sandbox` into the shortcut's launch options, and the app also enables it when it
-detects `SteamAppId`/`SteamGameId` on Linux. For a hand-made shortcut add `--no-sandbox` to Launch Options.
+## Launched from Steam: systemd launcher (verified 2026-10-22, Steam Deck OLED, gaming mode)
+When the Steam client launches Xenith directly, Chromium's zygote/GPU process fails to start
+(`GPU process launch failed: error_code=1002` → `GPU process isn't usable. Goodbye.`). With `--no-sandbox` the fatal
+error goes away, but the GPU process and renderer never start and no window appears. The same AppImage starts fine from
+a terminal, even through Steam's `reaper`/`steam-launch-wrapper`, so the trigger is the Steam client's process context.
+
+Fix: "Add to Steam" points the shortcut at `~/.local/share/xenith/steam-launch.sh` (written by Xenith). The script starts
+the AppImage with `--no-sandbox` as a transient `systemd-run --user` unit, passing DISPLAY and the Steam/gamescope
+variables, and waits while the unit runs, so Steam shows Xenith as running and "Exit game" stops it. Without systemd
+it falls back to a direct `--no-sandbox` launch. Extra Chromium flags for debugging: `~/.config/xenith/launch-flags`.
+Log: `/tmp/xenith-launch.log`. Result on the Deck: GPU process and renderer up, window on gamescope's `:1`.

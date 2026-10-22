@@ -114,7 +114,7 @@ Xbox Series X on a local network, PC with a Radeon RX 9070 XT. Full log: [docs/T
 - **Bitrate above ~18 Mbps** is not possible: the console ignores requests to raise it. Lowering the bitrate works.
 - **Cloud over a VPN.** If cloud traffic goes into a VPN tunnel, the connection may come up without video. Exclude Xenith or the Xbox Cloud servers from the tunnel.
 - **Flydigi Apex 6 Pro and X-Haptics** are not yet tested with a real controller.
-- **Steam Deck**: the build and VA-API are verified only against documentation and tests, not on a real Deck.
+- **Steam Deck**: launching from Gaming Mode is verified on a Steam Deck OLED; streaming and VA-API on the Deck are not measured yet. The Steam shortcut starts Xenith through `~/.local/share/xenith/steam-launch.sh` (works around Chromium's GPU process failing when the Steam client launches it).
 
 ## Build from source
 
