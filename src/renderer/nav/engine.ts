@@ -47,14 +47,27 @@ export function candidates(scope = activeScope()): HTMLElement[] {
   return Array.from(scope.querySelectorAll<HTMLElement>('[data-nav]')).filter(visible);
 }
 
+// Gamescope (Steam Deck gaming mode) may not give the X window input focus; then element.focus() leaves
+// document.activeElement on <body> and every A press only re-focused the default element. Track the gamepad focus
+// ourselves and fall back to it when the DOM focus did not move.
+let navFocus: HTMLElement | null = null;
+
+/** Element holding gamepad focus: the DOM focus, or the tracked one when the window has no input focus. */
+export function navFocused(): HTMLElement | null {
+  const a = document.activeElement as HTMLElement | null;
+  if (a && a !== document.body) return a;
+  return navFocus && navFocus.isConnected ? navFocus : null;
+}
+
 export function focusEl(el: HTMLElement | null | undefined): boolean {
   if (!el) return false;
+  navFocus = el;
   (el as HTMLElement & { focus(o?: { preventScroll?: boolean; focusVisible?: boolean }): void }).focus({ preventScroll: true, focusVisible: true });
   // focusin does not fire while the OS window is unfocused (Gamescope hand-off, offscreen) — mark explicitly.
   document.querySelectorAll('[data-focused]').forEach(n => { if (n !== el) n.removeAttribute('data-focused'); });
-  if (document.activeElement === el) el.setAttribute('data-focused', '');
+  el.setAttribute('data-focused', '');
   el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  return document.activeElement === el;
+  return true;
 }
 
 export function focusDefault(scope = activeScope()): boolean {
@@ -74,6 +87,7 @@ function currentFocus(scope: HTMLElement): HTMLElement | null {
     const n = a.closest<HTMLElement>('[data-nav]');
     if (n && visible(n)) return n;
   }
+  if (navFocus && navFocus.isConnected && scope.contains(navFocus) && visible(navFocus)) return navFocus;
   return null;
 }
 

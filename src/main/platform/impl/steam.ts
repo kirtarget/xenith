@@ -34,7 +34,7 @@ export function writeSteamLauncher(appImage: string): string {
     'EXTRA=$(cat "$HOME/.config/xenith/launch-flags" 2>/dev/null)',
     'if ! command -v systemd-run >/dev/null; then exec "$APP" --no-sandbox $EXTRA "$@"; fi',
     'UNIT="xenith-$$"',
-    'ARGS=$(printf " %q" "$@")',
+    'ARGS=""; [ $# -gt 0 ] && ARGS=$(printf " %q" "$@")',
     'systemd-run --user --unit="$UNIT" --collect --quiet \\',
     '  --setenv=DISPLAY="$DISPLAY" --setenv=SteamDeck="$SteamDeck" --setenv=GAMESCOPE_WAYLAND_DISPLAY="$GAMESCOPE_WAYLAND_DISPLAY" \\',
     '  --setenv=XDG_CURRENT_DESKTOP="$XDG_CURRENT_DESKTOP" --setenv=SteamAppId="$SteamAppId" --setenv=SteamGameId="$SteamGameId" \\',

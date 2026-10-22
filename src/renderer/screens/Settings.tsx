@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { cx } from '../components/controls';
 import { HintBar } from '../components/data';
 import { useI18n } from '../i18n';
-import { focusById } from '../nav/engine';
+import { focusById, navFocused } from '../nav/engine';
 import { useNavLayer, useScreenFocus } from '../nav/hooks';
 import { cycleSection, DECK_SECTIONS, go, SECTIONS } from '../state/actions';
 import { getState, setState, useApp, type SettingsSection } from '../state/store';
@@ -27,7 +27,7 @@ export function Settings() {
     lt: () => { step(-1); return true; },
     rt: () => { step(1); return true; },
     b: () => {
-      const inMain = mainRef.current?.contains(document.activeElement);
+      const inMain = mainRef.current?.contains(navFocused());
       if (inMain) { focusById(`sec-${current}`); return true; }
       go(getState().route.returnTo === 'settings' ? 'home' : getState().route.returnTo);
       return true;

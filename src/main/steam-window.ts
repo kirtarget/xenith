@@ -30,6 +30,6 @@ export function tagSteamGameWindow(w: BrowserWindow) {
   if (!xid) return;
   execFile('xprop', ['-id', String(xid), '-f', 'STEAM_GAME', '32c', '-set', 'STEAM_GAME', appId], { timeout: 5000 }, (err) => {
     if (err) logWarn('steam.window_tag_failed', { message: String(err.message || err) });
-    else log('steam.window_tagged', { appId, xid });
+    else { log('steam.window_tagged', { appId, xid }); if (!w.isDestroyed()) w.focus(); }
   });
 }

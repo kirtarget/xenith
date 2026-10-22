@@ -33,7 +33,7 @@ function StreamChrome() {
   const deck = useApp(x => x.deck);
   return (
     <>
-      {hud !== 'off' && <Hud stats={sess.stats} mode={deck ? 'compact' : hud} corner={corner} lossTrend={sess.lossTrend} i18n={i18n} deck={deck} />}
+      {hud !== 'off' && <Hud stats={sess.stats} mode={hud} corner={corner} lossTrend={sess.lossTrend} i18n={i18n} deck={deck} />}
       {sess.phase === 'reconnecting' && <Reconnecting />}
       {sess.overlayOpen && <SidePanel />}
       {!sess.overlayOpen && <MouseMenuButton />}
