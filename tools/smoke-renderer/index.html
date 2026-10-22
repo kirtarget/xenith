@@ -1,0 +1,14 @@
+﻿<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; media-src * blob:; connect-src *">
+<title>Xenith</title>
+<style>
+  html,body{margin:0;height:100%;background:#0B1018;color:#F2F6FA;font:14px/1.4 "Segoe UI",system-ui,sans-serif}
+  #videoHolder{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #videoHolder video{width:100%;height:100%;object-fit:contain;background:#000}
+  #hud{position:fixed;left:16px;top:16px;padding:10px 12px;background:rgba(18,28,41,.82);border-radius:10px;
+       font:12px/1.5 ui-monospace,Consolas,monospace;color:#91A1B4;white-space:pre;z-index:10}
+  #hud b{color:#F2F6FA;font-weight:600}
+</style></head>
+<body><div id="videoHolder"></div><div id="hud">Xenith · подготовка…</div>
+<script src="renderer.js"></script></body></html>

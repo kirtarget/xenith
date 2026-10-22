@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith — Стрим</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#000}
+a{color:#57E36F}a:hover{color:#8AF09A}
+</style>
+</helmet>
+<div style="position: relative; min-height: 900px; width: 100%; box-sizing: border-box; background: #000; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 14px; line-height: 22px; font-variant-numeric: tabular-nums; overflow: hidden;">
+
+  <div role="img" aria-label="Изображение игры с консоли" style="position: absolute; inset: 0; background: #0E141C; display: flex; align-items: center; justify-content: center;">
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: #121A24;"></div>
+    <div aria-hidden="true" style="position: absolute; left: 8%; bottom: 46%; width: 34%; height: 22%; background: #16202C; border-radius: 4px 4px 0 0;"></div>
+    <div aria-hidden="true" style="position: absolute; left: 50%; bottom: 46%; width: 18%; height: 34%; background: #192433; border-radius: 4px 4px 0 0;"></div>
+    <span style="position: relative; color: #3A4A60; font-size: 16px;">[Изображение игры]</span>
+  </div>
+
+  <dl aria-label="Показатели потока" style="position: absolute; left: 24px; top: 24px; margin: 0; padding: 12px 16px; border-radius: 12px; background: rgba(11,16,24,.78); backdrop-filter: blur(16px); display: grid; grid-template-columns: auto auto; column-gap: 20px; row-gap: 2px; font-size: 12px; line-height: 18px;">
+    <dt style="color: #91A1B4;">Разрешение</dt><dd style="margin: 0; text-align: right;">1920×1080</dd>
+    <dt style="color: #91A1B4;">Кадров в секунду</dt><dd style="margin: 0; text-align: right;">60</dd>
+    <dt style="color: #91A1B4;">Битрейт</dt><dd style="margin: 0; text-align: right;">16,9 Мбит/с</dd>
+    <dt style="color: #91A1B4;">Сеть, туда и обратно</dt><dd style="margin: 0; text-align: right;">1 мс</dd>
+    <dt style="color: #91A1B4;">Буфер видео</dt><dd style="margin: 0; text-align: right;">2,6 мс</dd>
+    <dt style="color: #91A1B4;">Декодирование</dt><dd style="margin: 0; text-align: right;">0,3 мс</dd>
+    <dt style="color: #91A1B4;">Потери пакетов</dt><dd style="margin: 0; text-align: right; color: #57E36F;">0</dd>
+  </dl>
+
+  <aside aria-label="Меню сессии" style="position: absolute; top: 16px; right: 16px; bottom: 16px; width: 368px; box-sizing: border-box; padding: 24px; border-radius: 20px; background: rgba(11,16,24,.86); backdrop-filter: blur(16px); display: flex; flex-direction: column; gap: 24px; overflow: auto;">
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Xbox</h1>
+      <span style="color: #91A1B4;">В игре 12 минут, качество стабильное</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <span id="prof" style="color: #91A1B4;">Профиль</span>
+      <div role="radiogroup" aria-labelledby="prof" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #121C29;">
+        <button type="button" role="radio" aria-checked="true" style="height: 40px; border-radius: 9px; border: 0; background: #22324A; color: #F2F6FA; font: inherit; font-weight: 500; cursor: pointer; outline: 2px solid #57E36F; outline-offset: 2px;">Мин. задержка</button>
+        <button type="button" role="radio" aria-checked="false" style="height: 40px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500; cursor: pointer;">Картинка</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <label for="sharp" style="display: flex; justify-content: space-between;"><span style="color: #91A1B4;">Чёткость</span><span>3 из 10</span></label>
+      <input id="sharp" type="range" min="0" max="10" value="3" style="width: 100%; accent-color: #57E36F;">
+      <span style="color: #62728A; font-size: 12px; line-height: 16px;">Повышает резкость картинки. Разрешение потока от этого не меняется.</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <label style="display: flex; justify-content: space-between; align-items: center; min-height: 44px; cursor: pointer;">
+        <span>Показатели потока</span>
+        <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #57E36F;">
+      </label>
+      <label style="display: flex; justify-content: space-between; align-items: center; min-height: 44px; cursor: pointer;">
+        <span>Полный экран</span>
+        <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #57E36F;">
+      </label>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 16px; border-top: 1px solid rgba(145,161,180,.14);">
+      <span style="display: flex; justify-content: space-between;"><span style="color: #91A1B4;">Контроллер</span><span>Xbox Wireless</span></span>
+      <span style="display: flex; justify-content: space-between;"><span style="color: #91A1B4;">Вибрация</span><span>Работает</span></span>
+    </div>
+
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+      <button type="button" style="height: 48px; border-radius: 12px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; font-weight: 500; cursor: pointer;">Нажать кнопку Xbox</button>
+      <button type="button" style="height: 48px; border-radius: 12px; border: 1px solid rgba(255,107,122,.4); background: transparent; color: #FF8D99; font: inherit; font-weight: 600; cursor: pointer;">Отключиться</button>
+    </div>
+
+    <p style="margin: 0; color: #62728A; font-size: 12px; line-height: 16px;">Удерживайте View и Menu, чтобы открыть или закрыть это меню. Esc на клавиатуре.</p>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src https: data:">
+<title>Xenith core test</title>
+<style>
+  body { background: #0B1018; color: #c9d4e5; font: 13px/1.5 ui-monospace, Consolas, monospace; margin: 24px; }
+  h1 { font: 600 18px system-ui; color: #fff; }
+  .ok { color: #6fdc8c; } .fail { color: #ff7b72; }
+  pre { white-space: pre-wrap; word-break: break-all; margin: 0 0 8px 16px; color: #8b9bb4; }
+</style>
+</head>
+<body>
+<h1>Xenith core — IPC / preload test page</h1>
+<p>Calls read-only window.xenith methods (no sessions are started). Set XENITH_CORE_SELFTEST=1 to log results and quit.</p>
+<div id="out"></div>
+<script>
+const out = document.getElementById('out');
+const results = {};
+function show(name, ok, value) {
+  const d = document.createElement('div');
+  d.innerHTML = `<span class="${ok ? 'ok' : 'fail'}">${ok ? 'OK  ' : 'FAIL'}</span> ${name}`;
+  const p = document.createElement('pre');
+  p.textContent = typeof value === 'string' ? value : String(JSON.stringify(value, null, 1) ?? value).slice(0, 600);
+  out.append(d, p);
+  results[name] = ok;
+  console.log(`CORETEST ${ok ? 'OK' : 'FAIL'} ${name} ${String(JSON.stringify(value) ?? value).slice(0, 300)}`);
+}
+async function t(name, fn) { try { show(name, true, await fn()); } catch (e) { show(name, false, String(e && e.message || e)); } }
+
+(async () => {
+  const x = window.xenith;
+  const events = [];
+  const off = x.on((ev) => events.push(ev.type));
+  const expected = ['platform','launchIntent','settingsGet','settingsSet','settingsReset','resetAllData','account','loginStart','loginCancel','signOut',
+    'consoles','cloudTitles','regions','history','historyClear','sessionStart','sessionSdp','sessionIce','sessionStop','sessionReport','sessionStage',
+    'steamStatus','steamAddLibraryShortcut','steamAddCloudShortcut','steamResyncArtwork','hapticsDiagnostics','gpuStatus','audioOutputs',
+    'window','openExternal','copyText','exportLogs','on','reportAudioOutputs','reportRumble'];
+  await t('api surface complete', async () => { const missing = expected.filter((k) => !(k in x)); if (missing.length) throw new Error('missing ' + missing); return Object.keys(x).length + ' members'; });
+  await t('platform', () => x.platform());
+  await t('launchIntent', () => x.launchIntent());
+  const before = await x.settingsGet();
+  await t('settingsSet clamps', async () => {
+    const s = await x.settingsSet({ video: { sharpness: 99 } });
+    if (s.video.sharpness !== 10) throw new Error('not clamped: ' + s.video.sharpness);
+    return s.video;
+  });
+  await t('settingsSet restore', () => x.settingsSet({ video: { sharpness: before.video.sharpness } }).then((s) => s.video.sharpness));
+  await t('account', async () => { const a = await x.account(); return { ...a, gamertag: a.gamertag ? '(set)' : null }; });
+  await t('consoles', async () => (await x.consoles()).map((c) => `${c.name} ${c.type} ${c.power} ready=${c.remotePlayReady}`));
+  await t('regions', async () => (await x.regions()).length + ' regions');
+  await t('cloudTitles (cached)', async () => (await x.cloudTitles()).length + ' titles');
+  await t('history', async () => (await x.history()).length + ' entries');
+  await t('steamStatus (friendly fallback)', () => x.steamStatus());
+  await t('steamAddLibraryShortcut (friendly)', () => x.steamAddLibraryShortcut());
+  await t('gpuStatus', () => x.gpuStatus());
+  x.reportAudioOutputs([{ deviceId: 'default', label: 'Default speakers' }]);
+  x.reportRumble({ left: 0.5, right: 0.2, lt: 0, rt: 1 });
+  await t('audioOutputs', () => x.audioOutputs());
+  await t('hapticsDiagnostics', () => x.hapticsDiagnostics());
+  await t('openExternal rejects non-allow-listed', async () => { try { await x.openExternal('https://example.com/'); } catch (e) { return 'rejected'; } throw new Error('was allowed'); });
+  await t('sessionSdp unknown session rejects', async () => { try { await x.sessionSdp('nope', 'v=0'); } catch (e) { return String(e.message).slice(-40); } throw new Error('resolved'); });
+  await t('copyText', () => x.copyText('xenith-core-test'));
+  await t('exportLogs', () => x.exportLogs());
+  await new Promise((r) => setTimeout(r, 300));
+  await t('events received', async () => events);
+  off();
+  const failed = Object.entries(results).filter(([, ok]) => !ok).map(([k]) => k);
+  console.log(`CORETEST DONE failed=${failed.length} ${failed.join(',')}`);
+  if (new URLSearchParams(location.search).has('selftest')) setTimeout(() => x.window.quit(), 200);
+})();
+</script>
+</body>
+</html>

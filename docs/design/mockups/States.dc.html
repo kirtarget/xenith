@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith — Ошибки и пустые состояния</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1018}
+a{color:#57E36F}a:hover{color:#8AF09A}
+</style>
+</helmet>
+<div style="min-height: 900px; width: 100%; box-sizing: border-box; background: #0B1018; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 14px; line-height: 22px; padding: 48px 64px; display: flex; flex-direction: column; gap: 28px;">
+  <h1 style="margin: 0; font-size: 25px; line-height: 30px; font-weight: 600;">Что видит человек, когда что-то не так</h1>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+    <sc-for list="{{states}}" as="s" hint-placeholder-count="5">
+      <section style="padding: 28px; border-radius: 20px; background: #121C29; display: flex; flex-direction: column; gap: 12px; min-height: 260px; box-sizing: border-box;">
+        <span aria-hidden="true" style="{{s.dot}}"></span>
+        <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">{{s.title}}</h2>
+        <p style="margin: 0; color: #91A1B4;">{{s.body}}</p>
+        <div style="margin-top: auto; display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" style="height: 40px; padding: 0 16px; border-radius: 10px; border: 0; background: #57E36F; color: #062A10; font: inherit; font-weight: 600; cursor: pointer;">{{s.primary}}</button>
+          <sc-if value="{{s.secondary}}" hint-placeholder-val="{{true}}">
+            <button type="button" style="height: 40px; padding: 0 16px; border-radius: 10px; border: 1px solid rgba(145,161,180,.22); background: transparent; color: #F2F6FA; font: inherit; font-weight: 500; cursor: pointer;">{{s.secondary}}</button>
+          </sc-if>
+        </div>
+      </section>
+    </sc-for>
+    <section aria-label="Загрузка главного экрана" style="padding: 28px; border-radius: 20px; background: #121C29; display: flex; flex-direction: column; gap: 14px; min-height: 260px; box-sizing: border-box;">
+      <span aria-hidden="true" style="width: 120px; height: 36px; border-radius: 8px; background: #1A2635;"></span>
+      <span aria-hidden="true" style="width: 220px; height: 14px; border-radius: 7px; background: #1A2635;"></span>
+      <span aria-hidden="true" style="width: 180px; height: 52px; border-radius: 14px; background: #1A2635; margin-top: 12px;"></span>
+      <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-top: auto;">
+        <span style="height: 3px; border-radius: 2px; background: #1A2635;"></span><span style="height: 3px; border-radius: 2px; background: #1A2635;"></span><span style="height: 3px; border-radius: 2px; background: #1A2635;"></span><span style="height: 3px; border-radius: 2px; background: #1A2635;"></span>
+      </span>
+      <span style="color: #62728A; font-size: 12px; line-height: 16px;">Загрузка повторяет форму экрана, поэтому ничего не прыгает</span>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dot = (c) => 'width: 10px; height: 10px; border-radius: 5px; background: ' + c + ';';
+    return { states: [
+      { dot: dot('#FFC266'), title: 'Консоль не найдена', body: 'В этом аккаунте нет консоли с Remote Play. На Xbox откройте «Настройки › Устройства и подключения › Удалённые функции» и включите их.', primary: 'Обновить список', secondary: 'Сменить аккаунт' },
+      { dot: dot('#FF6B7A'), title: 'Консоль не ответила', body: 'Xbox не проснулась за 60 секунд. Проверьте, что она в режиме ожидания, а не выключена полностью, и подключена к сети.', primary: 'Попробовать снова', secondary: '' },
+      { dot: dot('#FFC266'), title: 'Консоль занята', body: 'Remote Play уже идёт на другом устройстве. Если подключиться, та сессия закроется.', primary: 'Подключиться здесь', secondary: 'Отмена' },
+      { dot: dot('#FF6B7A'), title: 'Сеть не пропускает поток', body: 'Консоль готова, но соединение не установилось. Вне дома откройте на роутере порт 9002 UDP и TCP для Xbox или используйте IPv6.', primary: 'Повторить', secondary: 'Проверить сеть' },
+      { dot: dot('#FFC266'), title: 'Нужно войти заново', body: 'Microsoft завершила сохранённый вход. Это бывает раз в несколько месяцев или после смены пароля.', primary: 'Войти', secondary: '' },
+      { dot: dot('#62728A'), title: 'Облако недоступно', body: 'Для облачных игр нужна подписка Game Pass Ultimate. Remote Play с вашей Xbox работает без неё.', primary: 'К консоли', secondary: '' },
+      { dot: dot('#62728A'), title: 'Пока ни одного подключения', body: 'Здесь появятся ваши сессии: когда играли, в каком качестве и сколько.', primary: 'Подключиться', secondary: '' },
+      { dot: dot('#FF6B7A'), title: 'Связь прервалась', body: 'Поток остановился 4 секунды назад. Xenith пробует восстановить сессию, игра на консоли продолжается.', primary: 'Переподключить сейчас', secondary: 'Отключиться' }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

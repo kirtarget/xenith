@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith на Steam Deck — Консоль</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1018}
+</style>
+</helmet>
+<div style="width: 1280px; height: 800px; box-sizing: border-box; background: #0B1018; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 16px; line-height: 24px; font-variant-numeric: tabular-nums; display: flex; flex-direction: column;">
+
+  <header style="height: 72px; flex: none; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; gap: 24px; border-bottom: 1px solid rgba(145,161,180,.14);">
+    <span aria-hidden="true" style="height: 28px; padding: 0 8px; border-radius: 6px; background: #1A2635; color: #91A1B4; font-size: 13px; font-weight: 600; display: flex; align-items: center;">L1</span>
+    <nav aria-label="Разделы" style="display: flex; gap: 8px;">
+      <a href="DeckHome.dc.html" aria-current="page" style="height: 44px; padding: 0 20px; border-radius: 22px; background: #F2F6FA; color: #0B1018; text-decoration: none; font-weight: 600; display: flex; align-items: center;">Консоль</a>
+      <a href="DeckHome.dc.html" style="height: 44px; padding: 0 20px; border-radius: 22px; color: #91A1B4; text-decoration: none; font-weight: 500; display: flex; align-items: center;">Облако</a>
+      <a href="DeckSettings.dc.html" style="height: 44px; padding: 0 20px; border-radius: 22px; color: #91A1B4; text-decoration: none; font-weight: 500; display: flex; align-items: center;">Настройки</a>
+    </nav>
+    <span aria-hidden="true" style="height: 28px; padding: 0 8px; border-radius: 6px; background: #1A2635; color: #91A1B4; font-size: 13px; font-weight: 600; display: flex; align-items: center;">R1</span>
+    <span style="margin-left: auto; color: #91A1B4;">[Gamertag]</span>
+  </header>
+
+  <main style="flex: 1; min-height: 0; box-sizing: border-box; padding: 32px 40px; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 20px;">
+    <section aria-labelledby="console-name" style="padding: 36px; border-radius: 24px; background: #121C29; display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h1 id="console-name" style="margin: 0; font-size: 44px; line-height: 50px; font-weight: 600; letter-spacing: -0.01em;">Xbox</h1>
+        <span style="display: flex; align-items: center; gap: 10px; color: #91A1B4;"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 5px; background: #FFC266;"></span>В режиме ожидания, проснётся при подключении</span>
+      </div>
+      <a href="DeckStream.dc.html" style="align-self: flex-start; height: 64px; padding: 0 36px; border-radius: 16px; background: #57E36F; color: #062A10; font-size: 20px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 14px; outline: 3px solid #57E36F; outline-offset: 4px;">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"></path></svg>
+        Подключиться
+      </a>
+      <ol aria-label="Прошлое подключение" style="list-style: none; margin: auto 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px;">
+        <li style="display: flex; flex-direction: column; gap: 8px;"><span aria-hidden="true" style="height: 4px; border-radius: 2px; background: #2C3E57;"></span><span style="color: #91A1B4; font-size: 14px;">Пробуждение</span><span>12,0 с</span></li>
+        <li style="display: flex; flex-direction: column; gap: 8px;"><span aria-hidden="true" style="height: 4px; border-radius: 2px; background: #2C3E57;"></span><span style="color: #91A1B4; font-size: 14px;">Соединение</span><span>7,1 с</span></li>
+        <li style="display: flex; flex-direction: column; gap: 8px;"><span aria-hidden="true" style="height: 4px; border-radius: 2px; background: #2C3E57;"></span><span style="color: #91A1B4; font-size: 14px;">До картинки</span><span>19,1 с</span></li>
+      </ol>
+    </section>
+
+    <div style="display: flex; flex-direction: column; gap: 20px; min-height: 0;">
+      <section aria-labelledby="last" style="padding: 24px; border-radius: 20px; background: #121C29; display: flex; flex-direction: column; gap: 10px;">
+        <h2 id="last" style="margin: 0; font-size: 15px; font-weight: 500; color: #91A1B4;">Последняя сессия</h2>
+        <span style="font-size: 25px; line-height: 30px; font-weight: 600;">1080p, 60 к/с</span>
+        <span style="color: #91A1B4;">16,9 Мбит/с, 0 потерь, сегодня в 20:07</span>
+      </section>
+      <section aria-labelledby="qual" style="padding: 24px; border-radius: 20px; background: #121C29; display: flex; flex-direction: column; gap: 10px;">
+        <h2 id="qual" style="margin: 0; font-size: 15px; font-weight: 500; color: #91A1B4;">Качество для Steam Deck</h2>
+        <span style="font-size: 20px; line-height: 26px; font-weight: 600;">720p, экономия батареи</span>
+        <span style="color: #91A1B4;">Экран Deck 1280×800: 1080p почти не видно, а батарея садится быстрее</span>
+      </section>
+      <section aria-labelledby="pad" style="padding: 24px; border-radius: 20px; background: #121C29; display: flex; flex-direction: column; gap: 10px;">
+        <h2 id="pad" style="margin: 0; font-size: 15px; font-weight: 500; color: #91A1B4;">Управление</h2>
+        <span style="font-size: 20px; line-height: 26px; font-weight: 600;">Встроенные кнопки Deck</span>
+        <span style="color: #91A1B4;">Steam Input выключен для Xenith, как и нужно</span>
+      </section>
+    </div>
+  </main>
+
+  <footer style="height: 56px; flex: none; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; justify-content: flex-end; gap: 28px; background: #0E1520; border-top: 1px solid rgba(145,161,180,.14); font-size: 15px;">
+    <span style="display: flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 14px; background: #F2F6FA; color: #0B1018; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">A</span>Подключиться</span>
+    <span style="display: flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 14px; background: #1A2635; color: #F2F6FA; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">X</span>Сменить консоль</span>
+    <span style="display: flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 14px; background: #1A2635; color: #F2F6FA; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">B</span>Выход</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

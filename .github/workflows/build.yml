@@ -1,0 +1,53 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: --win nsis zip
+          - os: ubuntu-latest
+            target: --linux AppImage tar.gz
+          - os: macos-latest
+            target: --mac dmg zip
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Linux packages for AppImage
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2
+      - run: npm ci
+      - run: npx tsc --noEmit -p tsconfig.json
+      - run: node tools/platform-test/run-tests.mjs
+      - run: node build.mjs
+      - name: Package
+        run: npx electron-builder ${{ matrix.target }} --publish never
+        env:
+          # unsigned builds; provide CSC_LINK/CSC_KEY_PASSWORD (and APPLE_* for notarization) as secrets to sign
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xenith-${{ runner.os }}
+          path: |
+            release/*.exe
+            release/*.zip
+            release/*.AppImage
+            release/*.tar.gz
+            release/*.dmg
+          if-no-files-found: error

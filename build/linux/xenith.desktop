@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Xenith
+GenericName=Xbox Remote Play
+Comment=Xbox Remote Play and Cloud Gaming client
+Exec=/opt/Xenith/xenith %U
+Icon=xenith
+Terminal=false
+Categories=Game;
+Keywords=xbox;remote play;xcloud;cloud gaming;steam deck;
+StartupWMClass=Xenith

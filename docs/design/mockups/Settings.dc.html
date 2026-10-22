@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith — Настройки стриминга</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1018}
+a{color:#57E36F}a:hover{color:#8AF09A}
+</style>
+</helmet>
+<div style="min-height: 900px; width: 100%; box-sizing: border-box; background: #0B1018; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 14px; line-height: 22px; font-variant-numeric: tabular-nums; display: flex; flex-wrap: wrap;">
+
+  <nav aria-label="Разделы" style="width: 96px; flex: 0 0 96px; box-sizing: border-box; padding: 28px 0; display: flex; flex-direction: column; align-items: center; gap: 8px; border-right: 1px solid rgba(145,161,180,.14);">
+    <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #57E36F; color: #062A10; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; margin-bottom: 24px;">X</div>
+    <a href="Main.dc.html" style="width: 72px; padding: 10px 0 8px; border-radius: 14px; color: #91A1B4; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2"></rect><circle cx="12" cy="7" r="1.6"></circle><path d="M9 17h6"></path></svg>
+      Консоль
+    </a>
+    <a href="Cloud.dc.html" style="width: 72px; padding: 10px 0 8px; border-radius: 14px; color: #91A1B4; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 9.1 4.5 4.5 0 0 0 7 18z"></path></svg>
+      Облако
+    </a>
+    <a href="Settings.dc.html" aria-current="page" style="width: 72px; padding: 10px 0 8px; border-radius: 14px; background: #1A2635; color: #F2F6FA; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>
+      Настройки
+    </a>
+  </nav>
+
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-wrap: wrap;">
+    <nav aria-label="Разделы настроек" style="flex: 1 1 240px; max-width: 272px; box-sizing: border-box; padding: 40px 16px 32px 32px; display: flex; flex-direction: column; gap: 2px;">
+      <h1 style="margin: 0 0 20px 12px; font-size: 25px; line-height: 30px; font-weight: 600;">Настройки</h1>
+      <a href="Settings.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 10px; background: #1A2635; color: #F2F6FA; text-decoration: none; font-weight: 500;">Стриминг</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Видео</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Звук</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Контроллеры</a>
+      <a href="Haptics.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">X-Haptics</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Сеть</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Steam</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Интерфейс</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Дополнительно</a>
+    </nav>
+
+    <main style="flex: 999 1 480px; min-width: 0; box-sizing: border-box; padding: 40px 48px 32px; display: flex; flex-direction: column; gap: 32px;">
+      <div style="max-width: 760px; display: flex; flex-direction: column; gap: 32px;">
+        <header style="display: flex; flex-direction: column; gap: 6px;">
+          <h2 style="margin: 0; font-size: 25px; line-height: 30px; font-weight: 600;">Стриминг</h2>
+          <p style="margin: 0; color: #91A1B4;">Как консоль кодирует картинку и сколько клиент ждёт кадры. Изменения действуют со следующего подключения.</p>
+        </header>
+
+        <section aria-labelledby="p" style="display: flex; flex-direction: column; gap: 12px;">
+          <h3 id="p" style="margin: 0; font-size: 16px; font-weight: 600;">Профиль</h3>
+          <div role="radiogroup" aria-labelledby="p" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+            <button type="button" role="radio" aria-checked="true" style="text-align: left; padding: 18px 20px; border-radius: 16px; border: 2px solid #57E36F; background: #121C29; color: #F2F6FA; font: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 4px;">
+              <span style="font-size: 16px; font-weight: 600;">Минимальная задержка</span>
+              <span style="color: #91A1B4;">Кадр выводится сразу, качество подстраивается под сеть. Для динамичных игр.</span>
+            </button>
+            <button type="button" role="radio" aria-checked="false" style="text-align: left; padding: 18px 20px; border-radius: 16px; border: 2px solid rgba(145,161,180,.14); background: #121C29; color: #F2F6FA; font: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 4px;">
+              <span style="font-size: 16px; font-weight: 600;">Качество изображения</span>
+              <span style="color: #91A1B4;">Небольшой буфер сглаживает рывки, включена чёткость. Для неспешных игр.</span>
+            </button>
+          </div>
+        </section>
+
+        <section aria-labelledby="r" style="display: flex; flex-direction: column;">
+          <h3 id="r" style="margin: 0 0 4px; font-size: 16px; font-weight: 600;">Изображение</h3>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 16px 0; border-bottom: 1px solid rgba(145,161,180,.14); flex-wrap: wrap;">
+            <div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 2px;">
+              <span id="res" style="font-weight: 500;">Разрешение</span>
+              <span style="color: #91A1B4;">«Авто» просит у консоли до 1440p. Сейчас ваша консоль отдаёт не больше 1080p: Microsoft ещё не включила для неё 1440p.</span>
+            </div>
+            <div role="radiogroup" aria-labelledby="res" style="display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #121C29;">
+              <button type="button" role="radio" aria-checked="true" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: #22324A; color: #F2F6FA; font: inherit; font-weight: 500;">Авто</button>
+              <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">1440p</button>
+              <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">1080p</button>
+              <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">720p</button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 16px 0; border-bottom: 1px solid rgba(145,161,180,.14); flex-wrap: wrap;">
+            <div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 2px;">
+              <span id="br" style="font-weight: 500;">Битрейт</span>
+              <span style="color: #91A1B4;">Сколько данных в секунду просить у консоли. Больше — чище картинка, но нужна стабильная сеть.</span>
+            </div>
+            <div role="radiogroup" aria-labelledby="br" style="display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #121C29;">
+              <button type="button" role="radio" aria-checked="true" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: #22324A; color: #F2F6FA; font: inherit; font-weight: 500;">Авто</button>
+              <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">Баланс</button>
+              <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">Высокий</button>
+              <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">Свой</button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 16px 0; border-bottom: 1px solid rgba(145,161,180,.14); flex-wrap: wrap; opacity: .55;">
+            <div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 2px;">
+              <label for="kbps" style="font-weight: 500;">Свой битрейт</label>
+              <span style="color: #91A1B4;">Доступно в режиме «Свой». Консоль может не дать больше, чем позволяет её профиль.</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; width: 280px;">
+              <input id="kbps" type="range" min="5" max="40" value="20" disabled style="flex: 1; accent-color: #57E36F;">
+              <span style="width: 88px; text-align: right;">20 Мбит/с</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 16px 0; border-bottom: 1px solid rgba(145,161,180,.14); flex-wrap: wrap;">
+            <div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 2px;">
+              <span id="codec" style="font-weight: 500;">Кодек</span>
+              <span style="color: #91A1B4;">H.264 Main даёт картинку чище при том же битрейте. Консоль не поддерживает HEVC для Remote Play.</span>
+            </div>
+            <div role="radiogroup" aria-labelledby="codec" style="display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #121C29;">
+              <button type="button" role="radio" aria-checked="true" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: #22324A; color: #F2F6FA; font: inherit; font-weight: 500;">H.264 Main</button>
+              <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">Baseline</button>
+            </div>
+          </div>
+
+          <label style="display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 16px 0; cursor: pointer;">
+            <span style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-weight: 500;">Подключаться к последней консоли при запуске</span>
+              <span style="color: #91A1B4;">Xenith сразу начнёт подключение, как XBPlay с аргументом --xhome.</span>
+            </span>
+            <input type="checkbox" style="width: 22px; height: 22px; accent-color: #57E36F;">
+          </label>
+        </section>
+      </div>
+
+      <footer style="margin-top: auto; display: flex; gap: 24px; color: #62728A; font-size: 12px; line-height: 16px; flex-wrap: wrap;">
+        <span><b style="color: #91A1B4; font-weight: 600;">LB RB</b> другой раздел</span>
+        <span><b style="color: #91A1B4; font-weight: 600;">B</b> назад</span>
+      </footer>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

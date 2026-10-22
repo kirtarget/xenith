@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith — Вход</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1018}
+a{color:#57E36F}a:hover{color:#8AF09A}
+</style>
+</helmet>
+<div style="min-height: 900px; width: 100%; box-sizing: border-box; background: #0B1018; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 14px; line-height: 22px; font-variant-numeric: tabular-nums; display: flex; align-items: center; justify-content: center; padding: 48px 24px;">
+  <main style="width: 100%; max-width: 1040px; display: flex; flex-wrap: wrap; gap: 64px; align-items: center;">
+    <div style="flex: 1 1 380px; display: flex; flex-direction: column; gap: 20px;">
+      <div aria-hidden="true" style="width: 44px; height: 44px; border-radius: 12px; background: #57E36F; color: #062A10; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px;">X</div>
+      <h1 style="margin: 0; font-size: 39px; line-height: 44px; font-weight: 600; letter-spacing: -0.01em;">Войдите в аккаунт Microsoft</h1>
+      <p style="margin: 0; color: #91A1B4; font-size: 16px; line-height: 26px; max-width: 460px;">Нужен тот аккаунт, к которому привязана ваша Xbox. Пароль вводится на сайте Microsoft, Xenith его не видит.</p>
+      <ol style="margin: 8px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; color: #F2F6FA; font-size: 16px; line-height: 24px;">
+        <li>Откройте <a href="https://www.microsoft.com/link">microsoft.com/link</a> на телефоне или компьютере</li>
+        <li>Введите код справа</li>
+        <li>Войдите и подтвердите доступ. Xenith продолжит сам</li>
+      </ol>
+    </div>
+
+    <section aria-labelledby="code-title" style="flex: 1 1 380px; padding: 40px; border-radius: 24px; background: #121C29; display: flex; flex-direction: column; gap: 24px; align-items: flex-start;">
+      <h2 id="code-title" style="margin: 0; font-size: 14px; font-weight: 500; color: #91A1B4;">Код для входа</h2>
+      <p aria-live="polite" style="margin: 0; font-size: 48px; line-height: 56px; font-weight: 600; letter-spacing: 0.08em;">CF62 LZYS</p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button type="button" style="height: 48px; padding: 0 20px; border-radius: 12px; border: 0; background: #57E36F; color: #062A10; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; outline: 2px solid #57E36F; outline-offset: 3px;">Скопировать код</button>
+        <button type="button" style="height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid rgba(145,161,180,.22); background: transparent; color: #F2F6FA; font: inherit; font-size: 15px; font-weight: 500; cursor: pointer;">Открыть сайт</button>
+      </div>
+      <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; padding-top: 20px; border-top: 1px solid rgba(145,161,180,.14);">
+        <span style="display: flex; align-items: center; gap: 10px;"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: #57E36F;"></span>Ждём подтверждения</span>
+        <span style="color: #91A1B4;">Код действует ещё 14 минут. Вход сохранится, повторять его не придётся.</span>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

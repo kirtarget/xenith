@@ -1,0 +1,84 @@
+/* Xenith design tokens — docs/design/DESIGN.md §2. Single source for colour, type, space, radius, motion. */
+:root {
+  /* colour */
+  --bg: #0B1018;
+  --bg-bar: #0E1520;
+  --surface-1: #121C29;
+  --surface-2: #1A2635;
+  --surface-3: #22324A;
+  --track: #2C3E57;
+  --line: rgba(145, 161, 180, .14);
+  --line-strong: rgba(145, 161, 180, .22);
+  --text: #F2F6FA;
+  --text-2: #91A1B4;
+  --text-3: #62728A;
+  --placeholder: #3A4A60;
+  --accent: #57E36F;
+  --accent-hover: #8AF09A;
+  --accent-ink: #062A10;
+  --accent-halo: rgba(87, 227, 111, .2);
+  --ok: var(--accent);
+  --warn: #FFC266;
+  --bad: #FF6B7A;
+  --bad-text: #FF8D99;
+  --bad-line: rgba(255, 107, 122, .4);
+  --scrim: rgba(11, 16, 24, .78);
+  --scrim-strong: rgba(11, 16, 24, .86);
+  --scrim-deck: rgba(11, 16, 24, .92);
+  --backdrop: rgba(5, 8, 12, .6);
+
+  /* type — scale 1.25 */
+  --font: 'Onest Variable', 'Onest', system-ui, sans-serif;
+  --fs-12: 12px; --lh-12: 16px;
+  --fs-14: 14px; --lh-14: 22px;
+  --fs-16: 16px; --lh-16: 24px;
+  --fs-20: 20px; --lh-20: 26px;
+  --fs-25: 25px; --lh-25: 30px;
+  --fs-31: 31px; --lh-31: 36px;
+  --fs-39: 39px; --lh-39: 44px;
+  --fs-body: var(--fs-14); --lh-body: var(--lh-14);
+  --fs-hero: var(--fs-39); --lh-hero: var(--lh-39);
+
+  /* space — 4-pt grid */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-7: 28px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  /* radius by hierarchy */
+  --r-control: 10px;
+  --r-button-l: 12px;
+  --r-cta: 14px;
+  --r-panel: 16px;
+  --r-overlay: 20px;
+  --r-hero: 24px;
+
+  /* sizes */
+  --nav-w: 96px;
+  --control-h: 40px;
+  --control-h-l: 48px;
+  --cta-h: 56px;
+  --target: 44px;
+  --sheet-w: 368px;
+
+  /* motion */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --t-fast: 120ms;
+  --t-panel: 220ms;
+
+  /* focus */
+  --focus-w: 2px;
+  --focus-off: 3px;
+  --focus-halo: 0 0 0 7px var(--accent-halo);
+}
+
+/* Steam Deck: 1280×800 at arm's length — larger type, bigger targets (DeckHome / DeckSettings mockups). */
+[data-layout='deck'] {
+  --fs-body: var(--fs-16); --lh-body: var(--lh-16);
+  --fs-hero: 44px; --lh-hero: 50px;
+  --control-h: 48px;
+  --control-h-l: 60px;
+  --cta-h: 64px;
+  --target: 52px;
+  --sheet-w: 460px;
+  --focus-w: 3px;
+  --focus-off: 4px;
+}

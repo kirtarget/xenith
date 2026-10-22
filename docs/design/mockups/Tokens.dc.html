@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith — Токены и компоненты</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1018}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; background: #0B1018; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 14px; line-height: 22px; font-variant-numeric: tabular-nums; padding: 48px 64px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px;">
+
+  <div style="display: flex; flex-direction: column; gap: 36px;">
+    <section style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Цвета</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;">
+        <sc-for list="{{colors}}" as="c" hint-placeholder-count="10">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span aria-hidden="true" style="{{c.sw}}"></span>
+            <span style="font-weight: 500;">{{c.name}}</span>
+            <span style="color: #91A1B4; font-size: 12px; line-height: 16px;">{{c.hex}}, {{c.use}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px;">
+      <h2 style="margin: 0 0 4px; font-size: 20px; line-height: 26px; font-weight: 600;">Шрифт Onest</h2>
+      <span style="font-size: 39px; line-height: 44px; font-weight: 600; letter-spacing: -0.01em;">Подключение к Xbox</span>
+      <span style="font-size: 25px; line-height: 30px; font-weight: 600;">Настройки стриминга</span>
+      <span style="font-size: 20px; line-height: 26px; font-weight: 600;">Последняя сессия</span>
+      <span style="font-size: 16px; line-height: 24px;">Консоль просыпается и запускает Remote Play</span>
+      <span style="font-size: 14px; line-height: 22px; color: #91A1B4;">Обычный текст и пояснения, 14 на 22</span>
+      <span style="font-size: 12px; line-height: 16px; color: #91A1B4;">Подписи и подсказки, 12 на 16. Цифры: 1920×1080, 16,9 Мбит/с</span>
+    </section>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 36px;">
+    <section style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Кнопки</h2>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+        <button type="button" style="height: 48px; padding: 0 22px; border-radius: 12px; border: 0; background: #57E36F; color: #062A10; font: inherit; font-size: 15px; font-weight: 600;">Подключиться</button>
+        <button type="button" style="height: 48px; padding: 0 22px; border-radius: 12px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; font-size: 15px; font-weight: 500;">Подключиться снова</button>
+        <button type="button" style="height: 48px; padding: 0 22px; border-radius: 12px; border: 1px solid rgba(145,161,180,.22); background: transparent; color: #F2F6FA; font: inherit; font-size: 15px; font-weight: 500;">Отменить</button>
+        <button type="button" style="height: 48px; padding: 0 22px; border-radius: 12px; border: 1px solid rgba(255,107,122,.4); background: transparent; color: #FF8D99; font: inherit; font-size: 15px; font-weight: 600;">Отключиться</button>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Фокус с геймпада</h2>
+      <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <button type="button" style="height: 48px; padding: 0 22px; border-radius: 12px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; font-size: 15px; font-weight: 500; outline: 2px solid #57E36F; outline-offset: 3px; box-shadow: 0 0 0 7px rgba(87,227,111,.2);">В фокусе</button>
+        <button type="button" style="height: 48px; padding: 0 22px; border-radius: 12px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; font-size: 15px; font-weight: 500;">Без фокуса</button>
+        <span style="color: #91A1B4; max-width: 280px;">Кольцо видно всегда, когда управляют геймпадом или клавиатурой. При клике мышью его нет.</span>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Переключатели</h2>
+      <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+        <div role="radiogroup" aria-label="Пример" style="display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #121C29;">
+          <button type="button" role="radio" aria-checked="true" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: #22324A; color: #F2F6FA; font: inherit; font-weight: 500;">Авто</button>
+          <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">1080p</button>
+          <button type="button" role="radio" aria-checked="false" style="height: 36px; padding: 0 14px; border-radius: 9px; border: 0; background: transparent; color: #91A1B4; font: inherit; font-weight: 500;">720p</button>
+        </div>
+        <label style="display: flex; align-items: center; gap: 10px;"><input type="checkbox" checked style="width: 22px; height: 22px; accent-color: #57E36F;">Вибрация</label>
+        <label style="display: flex; align-items: center; gap: 12px; width: 240px;"><span>Мёртвая зона</span><input type="range" value="10" min="0" max="30" style="flex: 1; accent-color: #57E36F;"></label>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Радиусы по уровням</h2>
+      <div style="display: flex; gap: 16px; align-items: flex-end;">
+        <span style="width: 72px; height: 40px; border-radius: 10px; background: #1A2635; display: flex; align-items: center; justify-content: center; color: #91A1B4; font-size: 12px;">10</span>
+        <span style="width: 120px; height: 72px; border-radius: 16px; background: #121C29; display: flex; align-items: center; justify-content: center; color: #91A1B4; font-size: 12px;">16</span>
+        <span style="width: 180px; height: 104px; border-radius: 24px; background: #121C29; display: flex; align-items: center; justify-content: center; color: #91A1B4; font-size: 12px;">24</span>
+        <span style="color: #91A1B4; max-width: 220px;">Кнопки 10, панели 16, главный блок 24. Чем крупнее элемент, тем мягче угол.</span>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const sw = (h, b) => 'height: 56px; border-radius: 12px; background: ' + h + ';' + (b ? ' border: 1px solid rgba(145,161,180,.22);' : '');
+    const list = [
+      ['Фон', '#0B1018', 'основа', true], ['Поверхность', '#121C29', 'панели'], ['Поверхность 2', '#1A2635', 'кнопки'], ['Поверхность 3', '#22324A', 'выбор'],
+      ['Текст', '#F2F6FA', 'главный'], ['Текст 2', '#91A1B4', 'пояснения'], ['Текст 3', '#62728A', 'подписи'], ['Акцент', '#57E36F', 'действие, фокус и «норма»'],
+      ['Внимание', '#FFC266', 'только статус'], ['Ошибка', '#FF6B7A', 'только статус']
+    ];
+    return { colors: list.map(([name, hex, use, b]) => ({ name, hex, use, sw: sw(hex, b) })) };
+  }
+}
+</script>
+</body>
+</html>

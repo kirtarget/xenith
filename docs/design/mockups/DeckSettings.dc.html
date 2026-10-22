@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith на Steam Deck — Настройки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1018}
+</style>
+</helmet>
+<div style="width: 1280px; height: 800px; box-sizing: border-box; background: #0B1018; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 16px; line-height: 24px; font-variant-numeric: tabular-nums; display: flex; flex-direction: column;">
+
+  <header style="height: 72px; flex: none; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; gap: 24px; border-bottom: 1px solid rgba(145,161,180,.14);">
+    <span aria-hidden="true" style="height: 28px; padding: 0 8px; border-radius: 6px; background: #1A2635; color: #91A1B4; font-size: 13px; font-weight: 600; display: flex; align-items: center;">L1</span>
+    <nav aria-label="Разделы" style="display: flex; gap: 8px;">
+      <a href="DeckHome.dc.html" style="height: 44px; padding: 0 20px; border-radius: 22px; color: #91A1B4; text-decoration: none; font-weight: 500; display: flex; align-items: center;">Консоль</a>
+      <a href="DeckHome.dc.html" style="height: 44px; padding: 0 20px; border-radius: 22px; color: #91A1B4; text-decoration: none; font-weight: 500; display: flex; align-items: center;">Облако</a>
+      <a href="DeckSettings.dc.html" aria-current="page" style="height: 44px; padding: 0 20px; border-radius: 22px; background: #F2F6FA; color: #0B1018; text-decoration: none; font-weight: 600; display: flex; align-items: center;">Настройки</a>
+    </nav>
+    <span aria-hidden="true" style="height: 28px; padding: 0 8px; border-radius: 6px; background: #1A2635; color: #91A1B4; font-size: 13px; font-weight: 600; display: flex; align-items: center;">R1</span>
+  </header>
+
+  <div style="flex: 1; min-height: 0; display: flex;">
+    <nav aria-label="Разделы настроек" style="width: 260px; flex: none; box-sizing: border-box; padding: 24px 12px 24px 28px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid rgba(145,161,180,.14);">
+      <a href="DeckSettings.dc.html" aria-current="page" style="height: 52px; padding: 0 16px; border-radius: 12px; background: #1A2635; color: #F2F6FA; text-decoration: none; font-weight: 600; display: flex; align-items: center;">Стриминг</a>
+      <a href="DeckSettings.dc.html" style="height: 52px; padding: 0 16px; border-radius: 12px; color: #91A1B4; text-decoration: none; display: flex; align-items: center;">Видео</a>
+      <a href="DeckSettings.dc.html" style="height: 52px; padding: 0 16px; border-radius: 12px; color: #91A1B4; text-decoration: none; display: flex; align-items: center;">Звук</a>
+      <a href="DeckSettings.dc.html" style="height: 52px; padding: 0 16px; border-radius: 12px; color: #91A1B4; text-decoration: none; display: flex; align-items: center;">Управление</a>
+      <a href="DeckSettings.dc.html" style="height: 52px; padding: 0 16px; border-radius: 12px; color: #91A1B4; text-decoration: none; display: flex; align-items: center;">Сеть</a>
+      <a href="DeckSettings.dc.html" style="height: 52px; padding: 0 16px; border-radius: 12px; color: #91A1B4; text-decoration: none; display: flex; align-items: center;">Steam</a>
+      <a href="DeckSettings.dc.html" style="height: 52px; padding: 0 16px; border-radius: 12px; color: #91A1B4; text-decoration: none; display: flex; align-items: center;">Интерфейс</a>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; box-sizing: border-box; padding: 24px 40px; display: flex; flex-direction: column; gap: 4px; overflow: auto;">
+      <h1 style="margin: 0 0 12px; font-size: 25px; line-height: 30px; font-weight: 600;">Стриминг</h1>
+
+      <button type="button" style="min-height: 76px; padding: 12px 20px; border-radius: 16px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 24px; outline: 3px solid #57E36F; outline-offset: 2px;">
+        <span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Профиль</span><span style="color: #91A1B4; font-size: 14px; line-height: 20px;">Меньше нагрузки на декодер и батарею</span></span>
+        <span style="display: flex; align-items: center; gap: 10px; color: #F2F6FA; flex: none;">
+          <span aria-hidden="true" style="color: #91A1B4;">‹</span>Экономия батареи<span aria-hidden="true" style="color: #91A1B4;">›</span>
+        </span>
+      </button>
+      <button type="button" style="min-height: 76px; padding: 12px 20px; border-radius: 16px; border: 0; background: transparent; color: #F2F6FA; font: inherit; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 24px;">
+        <span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Разрешение</span><span style="color: #91A1B4; font-size: 14px; line-height: 20px;">Экран Deck 1280×800, поэтому по умолчанию 720p</span></span>
+        <span style="flex: none;">720p</span>
+      </button>
+      <button type="button" style="min-height: 76px; padding: 12px 20px; border-radius: 16px; border: 0; background: transparent; color: #F2F6FA; font: inherit; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 24px;">
+        <span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Битрейт</span><span style="color: #91A1B4; font-size: 14px; line-height: 20px;">Подстраивается под Wi-Fi</span></span>
+        <span style="flex: none;">Авто</span>
+      </button>
+      <button type="button" style="min-height: 76px; padding: 12px 20px; border-radius: 16px; border: 0; background: transparent; color: #F2F6FA; font: inherit; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 24px;">
+        <span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Аппаратное декодирование</span><span style="color: #91A1B4; font-size: 14px; line-height: 20px;">Через VA-API на графике Deck</span></span>
+        <span style="flex: none; color: #57E36F;">Включено</span>
+      </button>
+      <button type="button" style="min-height: 76px; padding: 12px 20px; border-radius: 16px; border: 0; background: transparent; color: #F2F6FA; font: inherit; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 24px;">
+        <span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Подключаться при запуске</span><span style="color: #91A1B4; font-size: 14px; line-height: 20px;">Сразу к последней консоли, удобно из игрового режима</span></span>
+        <span style="flex: none;">Да</span>
+      </button>
+    </main>
+  </div>
+
+  <footer style="height: 56px; flex: none; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; justify-content: flex-end; gap: 28px; background: #0E1520; border-top: 1px solid rgba(145,161,180,.14); font-size: 15px;">
+    <span style="display: flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="height: 28px; padding: 0 8px; border-radius: 6px; background: #1A2635; color: #F2F6FA; font-size: 13px; font-weight: 700; display: flex; align-items: center;">‹ ›</span>Изменить</span>
+    <span style="display: flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 14px; background: #1A2635; color: #F2F6FA; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">B</span>Назад</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

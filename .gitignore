@@ -1,0 +1,15 @@
+node_modules/
+dist/
+out/
+release/
+*.log
+.env
+.env.*
+# never commit tokens, captures or third-party binaries
+captures/
+secrets/
+*.pcapng
+
+logs/
+.ui-shots/
+dist-test/

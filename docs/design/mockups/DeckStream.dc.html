@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith на Steam Deck — Меню во время игры</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#000}
+</style>
+</helmet>
+<div style="position: relative; width: 1280px; height: 800px; box-sizing: border-box; background: #000; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 16px; line-height: 24px; font-variant-numeric: tabular-nums; overflow: hidden;">
+  <div role="img" aria-label="Изображение игры с консоли" style="position: absolute; inset: 0; background: #0E141C; display: flex; align-items: center; justify-content: center;">
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 44%; background: #121A24;"></div>
+    <span style="position: relative; color: #3A4A60;">[Изображение игры]</span>
+  </div>
+
+  <dl aria-label="Показатели потока" style="position: absolute; left: 20px; top: 20px; margin: 0; padding: 10px 14px; border-radius: 12px; background: rgba(11,16,24,.78); display: flex; gap: 18px; font-size: 14px; line-height: 20px;">
+    <div style="display: flex; gap: 6px;"><dt style="color: #91A1B4;">Видео</dt><dd style="margin: 0;">1280×720, 60 к/с</dd></div>
+    <div style="display: flex; gap: 6px;"><dt style="color: #91A1B4;">Сеть</dt><dd style="margin: 0;">4 мс</dd></div>
+    <div style="display: flex; gap: 6px;"><dt style="color: #91A1B4;">Потери</dt><dd style="margin: 0; color: #57E36F;">0</dd></div>
+  </dl>
+
+  <aside aria-label="Меню сессии" style="position: absolute; top: 0; right: 0; bottom: 0; width: 460px; box-sizing: border-box; padding: 32px 28px; background: rgba(11,16,24,.92); display: flex; flex-direction: column; gap: 6px;">
+    <h1 style="margin: 0 0 4px 16px; font-size: 25px; line-height: 30px; font-weight: 600;">Xbox</h1>
+    <p style="margin: 0 0 18px 16px; color: #91A1B4;">В игре 34 минуты</p>
+
+    <button type="button" style="height: 60px; padding: 0 16px; border-radius: 14px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; font-weight: 600; text-align: left; outline: 3px solid #57E36F; outline-offset: 2px;">Вернуться в игру</button>
+    <button type="button" style="height: 60px; padding: 0 16px; border-radius: 14px; border: 0; background: transparent; color: #F2F6FA; font: inherit; font-weight: 500; text-align: left;">Нажать кнопку Xbox</button>
+    <button type="button" style="height: 60px; padding: 0 16px; border-radius: 14px; border: 0; background: transparent; color: #F2F6FA; font: inherit; font-weight: 500; display: flex; justify-content: space-between; align-items: center;"><span>Профиль</span><span style="color: #91A1B4;">Экономия батареи</span></button>
+    <button type="button" style="height: 60px; padding: 0 16px; border-radius: 14px; border: 0; background: transparent; color: #F2F6FA; font: inherit; font-weight: 500; display: flex; justify-content: space-between; align-items: center;"><span>Чёткость</span><span style="color: #91A1B4;">3 из 10</span></button>
+    <button type="button" style="height: 60px; padding: 0 16px; border-radius: 14px; border: 0; background: transparent; color: #F2F6FA; font: inherit; font-weight: 500; display: flex; justify-content: space-between; align-items: center;"><span>Показатели потока</span><span style="color: #91A1B4;">Кратко</span></button>
+
+    <button type="button" style="margin-top: auto; height: 60px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,107,122,.4); background: transparent; color: #FF8D99; font: inherit; font-weight: 600; text-align: left;">Отключиться</button>
+    <p style="margin: 12px 16px 0; color: #62728A; font-size: 14px; line-height: 20px;">Меню открывается, если удерживать View и Menu</p>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

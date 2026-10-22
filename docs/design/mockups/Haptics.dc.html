@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Xenith — X-Haptics</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1018}
+a{color:#57E36F}a:hover{color:#8AF09A}
+</style>
+</helmet>
+<div style="min-height: 900px; width: 100%; box-sizing: border-box; background: #0B1018; color: #F2F6FA; font-family: Onest, system-ui, sans-serif; font-size: 14px; line-height: 22px; font-variant-numeric: tabular-nums; display: flex; flex-wrap: wrap;">
+
+  <nav aria-label="Разделы" style="width: 96px; flex: 0 0 96px; box-sizing: border-box; padding: 28px 0; display: flex; flex-direction: column; align-items: center; gap: 8px; border-right: 1px solid rgba(145,161,180,.14);">
+    <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #57E36F; color: #062A10; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; margin-bottom: 24px;">X</div>
+    <a href="Main.dc.html" style="width: 72px; padding: 10px 0 8px; border-radius: 14px; color: #91A1B4; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2"></rect><circle cx="12" cy="7" r="1.6"></circle><path d="M9 17h6"></path></svg>
+      Консоль
+    </a>
+    <a href="Cloud.dc.html" style="width: 72px; padding: 10px 0 8px; border-radius: 14px; color: #91A1B4; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 9.1 4.5 4.5 0 0 0 7 18z"></path></svg>
+      Облако
+    </a>
+    <a href="Settings.dc.html" aria-current="page" style="width: 72px; padding: 10px 0 8px; border-radius: 14px; background: #1A2635; color: #F2F6FA; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>
+      Настройки
+    </a>
+  </nav>
+
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-wrap: wrap;">
+    <nav aria-label="Разделы настроек" style="flex: 1 1 240px; max-width: 272px; box-sizing: border-box; padding: 40px 16px 32px 32px; display: flex; flex-direction: column; gap: 2px;">
+      <h1 style="margin: 0 0 20px 12px; font-size: 25px; line-height: 30px; font-weight: 600;">Настройки</h1>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Стриминг</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Видео</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Звук</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Контроллеры</a>
+      <a href="Haptics.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 10px; background: #1A2635; color: #F2F6FA; text-decoration: none; font-weight: 500;">X-Haptics</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Сеть</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Steam</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Интерфейс</a>
+      <a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 10px; color: #91A1B4; text-decoration: none;">Дополнительно</a>
+    </nav>
+
+    <main style="flex: 999 1 480px; min-width: 0; box-sizing: border-box; padding: 40px 48px 32px; display: flex; flex-direction: column; gap: 32px;">
+      <div style="max-width: 760px; display: flex; flex-direction: column; gap: 28px;">
+        <header style="display: flex; flex-direction: column; gap: 6px;">
+          <h2 style="margin: 0; font-size: 25px; line-height: 30px; font-weight: 600;">X-Haptics</h2>
+          <p style="margin: 0; color: #91A1B4;">Движок Flydigi превращает игровой звук в вибрацию. Это не обычная вибрация от консоли: Xenith передаёт её отдельно. Здесь видно, всё ли готово для X-Haptics.</p>
+        </header>
+
+        <section aria-labelledby="check" style="display: flex; flex-direction: column; border-radius: 16px; background: #121C29; padding: 8px 20px;">
+          <h3 id="check" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Проверка</h3>
+          <div style="display: grid; grid-template-columns: 20px minmax(0,1fr) auto; gap: 14px; align-items: start; padding: 14px 0; border-bottom: 1px solid rgba(145,161,180,.14);">
+            <span aria-hidden="true" style="margin-top: 6px; width: 10px; height: 10px; border-radius: 5px; background: #FFC266;"></span>
+            <span style="display: flex; flex-direction: column;"><span style="font-weight: 500;">Контроллер Flydigi</span><span style="color: #91A1B4;">Не найден. Подключите Apex 6 Pro по USB или через адаптер 2,4 ГГц.</span></span>
+            <span style="color: #FFC266;">Нет</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 20px minmax(0,1fr) auto; gap: 14px; align-items: start; padding: 14px 0; border-bottom: 1px solid rgba(145,161,180,.14);">
+            <span aria-hidden="true" style="margin-top: 6px; width: 10px; height: 10px; border-radius: 5px; background: #FFC266;"></span>
+            <span style="display: flex; flex-direction: column;"><span style="font-weight: 500;">Flydigi Space Station</span><span style="color: #91A1B4;">Не установлена. X-Haptics работает только через неё.</span></span>
+            <a href="Haptics.dc.html" style="color: #57E36F; text-decoration: none; font-weight: 500;">Где скачать</a>
+          </div>
+          <div style="display: grid; grid-template-columns: 20px minmax(0,1fr) auto; gap: 14px; align-items: start; padding: 14px 0; border-bottom: 1px solid rgba(145,161,180,.14);">
+            <span aria-hidden="true" style="margin-top: 6px; width: 10px; height: 10px; border-radius: 5px; background: #57E36F;"></span>
+            <span style="display: flex; flex-direction: column;"><span style="font-weight: 500;">Игровой звук</span><span style="color: #91A1B4;">Идёт на устройство «Динамики» по умолчанию, его слышит любая программа Windows</span></span>
+            <span style="color: #57E36F;">Есть</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 20px minmax(0,1fr) auto; gap: 14px; align-items: start; padding: 14px 0; border-bottom: 1px solid rgba(145,161,180,.14);">
+            <span aria-hidden="true" style="margin-top: 6px; width: 10px; height: 10px; border-radius: 5px; background: #62728A;"></span>
+            <span style="display: flex; flex-direction: column;"><span style="font-weight: 500;">Звук доходит до движка Flydigi</span><span style="color: #91A1B4;">Проверим, когда будут контроллер и Space Station</span></span>
+            <span style="color: #91A1B4;">Не проверено</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 20px minmax(0,1fr) auto; gap: 14px; align-items: start; padding: 14px 0;">
+            <span aria-hidden="true" style="margin-top: 6px; width: 10px; height: 10px; border-radius: 5px; background: #57E36F;"></span>
+            <span style="display: flex; flex-direction: column;"><span style="font-weight: 500;">Обычная вибрация от консоли</span><span style="color: #91A1B4;">Последнее событие 3 секунды назад: левый 40 %, правый 25 %</span></span>
+            <span style="color: #57E36F;">Работает</span>
+          </div>
+        </section>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button type="button" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; font-weight: 500; cursor: pointer; outline: 2px solid #57E36F; outline-offset: 3px;">Проверить снова</button>
+          <button type="button" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 0; background: #1A2635; color: #F2F6FA; font: inherit; font-weight: 500; cursor: pointer;">Тестовый звук</button>
+        </div>
+
+        <section aria-labelledby="bridge" style="display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 16px; border: 1px solid rgba(145,161,180,.14);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <h3 id="bridge" style="margin: 0; font-size: 16px; font-weight: 600;">Мост контроллера</h3>
+              <p style="margin: 0; color: #91A1B4;">Играете на телевизоре, подключённом к Xbox, а ПК только передаёт ввод Flydigi и проигрывает звук для X-Haptics. Видео принимается, но не выводится, чтобы не нагружать ПК.</p>
+            </div>
+            <input type="checkbox" aria-labelledby="bridge" style="flex: none; width: 22px; height: 22px; accent-color: #57E36F;">
+          </div>
+          <label style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+            <span style="color: #91A1B4;">Куда выводить звук игры</span>
+            <select style="height: 40px; min-width: 260px; padding: 0 12px; border-radius: 10px; border: 1px solid rgba(145,161,180,.22); background: #121C29; color: #F2F6FA; font: inherit;">
+              <option>Динамики (по умолчанию)</option>
+            </select>
+          </label>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

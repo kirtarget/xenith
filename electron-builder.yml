@@ -1,0 +1,103 @@
+# Xenith packaging. Build `node build.mjs` first (dist/ must be self-contained: main, preload, renderer bundles).
+#   Windows : npx electron-builder --win nsis zip
+#   Linux   : npx electron-builder --linux AppImage tar.gz   (AppImage needs a Linux host or CI — see build/linux/build-on-linux.md)
+#   macOS   : npx electron-builder --mac dmg zip               (macOS host / CI only)
+appId: io.github.xenith.app
+productName: Xenith
+copyright: Copyright © 2026 Xenith contributors (MIT)
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**
+  - "!dist/platform-test/**"
+  - "!dist/**/*.map"
+  - "!dist/*.{log,ps1,txt,mjs}"
+  - package.json
+  # Everything is bundled by esbuild, so no node_modules are shipped.
+  - "!node_modules/**"
+npmRebuild: false
+nodeGypRebuild: false
+buildDependenciesFromSource: false
+asar: true
+electronLanguages: [en-US, ru]
+extraMetadata:
+  main: dist/main.js
+  desktopName: xenith.desktop          # Wayland app_id / window association on Linux
+
+win:
+  icon: build/icon.ico
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: zip
+      arch: [x64]
+  artifactName: ${productName}-${version}-win-${arch}.${ext}
+  # unsigned by default; set CSC_LINK / WIN_CSC_LINK to sign
+  signAndEditExecutable: true
+
+nsis:
+  oneClick: false
+  perMachine: false                     # per-user install to %LOCALAPPDATA%\Programs\Xenith, no UAC
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: Xenith
+  menuCategory: false
+  installerLanguages: [ru_RU, en_US]
+  multiLanguageInstaller: true
+  displayLanguageSelector: false        # picks Russian/English from the Windows UI language
+  language: "1049"
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  deleteAppDataOnUninstall: false
+  artifactName: ${productName}-Setup-${version}.${ext}
+
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: tar.gz
+      arch: [x64]
+  icon: build/icons
+  category: Game
+  executableName: xenith
+  maintainer: Xenith contributors
+  vendor: Xenith
+  synopsis: Xbox Remote Play and Cloud Gaming client
+  description: Open-source Xbox Remote Play / Xbox Cloud Gaming client, made for Steam Deck and Windows.
+  artifactName: ${productName}-${version}-linux-${arch}.${ext}
+  desktop:
+    entry:
+      Name: Xenith
+      GenericName: Xbox Remote Play
+      Comment: Xbox Remote Play and Cloud Gaming client
+      Categories: Game;
+      Keywords: xbox;remote play;xcloud;cloud gaming;steam deck;
+      StartupWMClass: Xenith
+      Terminal: "false"
+
+appImage:
+  artifactName: ${productName}-${version}-linux-${arch}.AppImage
+
+mac:
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+    - target: zip
+      arch: [x64, arm64]
+  icon: build/icon.png
+  category: public.app-category.games
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  identity: null                        # unsigned by default; remove to sign with a Developer ID from the keychain
+  notarize: false
+  artifactName: ${productName}-${version}-mac-${arch}.${ext}
+
+dmg:
+  artifactName: ${productName}-${version}-mac-${arch}.dmg
+
+publish: null
