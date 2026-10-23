@@ -24,6 +24,7 @@ export interface Settings {
     customKbps: number;            // 5000–40000, used when bitrateMode = 'custom'
     codec: CodecChoice;
     autoConnectOnLaunch: boolean;
+    matchRefresh: boolean;          // Steam Deck gaming mode: panel at 60 Hz while streaming
     lastServerId: string | null;
   };
   video: {
@@ -76,7 +77,7 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  streaming: { profile: 'low-latency', resolution: 'auto', bitrateMode: 'auto', customKbps: 20000, codec: 'main', autoConnectOnLaunch: false, lastServerId: null },
+  streaming: { profile: 'low-latency', resolution: 'auto', bitrateMode: 'auto', customKbps: 20000, codec: 'main', autoConnectOnLaunch: false, lastServerId: null, matchRefresh: true },
   video: { sharpness: 0, upscaleFsr: false, brightness: 1, contrast: 1, saturation: 1, fit: 'contain', cloudFits: {}, hud: 'off', hudCorner: 'top-left' },
   audio: { outputDeviceId: '', volume: 1 },
   controllers: { vibration: true, triggerRumble: true, deadZone: 0.1, guideCombo: true, overlayCombo: true, mouseKeyboard: false, remap: {} },

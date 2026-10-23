@@ -161,7 +161,10 @@ async function connectSession(kind: SessionKind, targetId: string, targetName: s
   signal?.addEventListener('abort', abort, { once: true });
   try {
     if (signal?.aborted) { abort(); return; }
-    await ctrl.start({ kind, targetId, targetName, container, settings: getState().settings });
+    // Steam Deck: the Xenith controller template makes the right trackpad a mouse; forward it in cloud games that support one.
+    const title = kind === 'cloud' ? getState().cloud?.find(t => t.titleId === targetId) : undefined;
+    const autoMouseKeyboard = !!(getState().deck && title?.supportsMouseKeyboard);
+    await ctrl.start({ kind, targetId, targetName, container, settings: getState().settings, autoMouseKeyboard });
   } catch (e) {
     if (generation !== connectionGeneration) return;
     const cur = getState().session;

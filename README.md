@@ -122,6 +122,14 @@ The Xenith menu stays on View + Menu (hold) and the Xbox button on View + Menu (
 
 Adjust gyro sensitivity and activation in Steam Input. The gyro emulates a stick, so the game's stick sensitivity and dead zone affect aiming. Separate cloud game shortcuts can use separate Steam layouts. Remote Play does not automatically identify the game running on the console.
 
+### Trackpad mouse in cloud games
+
+With the Xenith template, the right trackpad moves the mouse and clicks the left button; clicking the left trackpad is the right button. On the Deck, Xenith forwards mouse input automatically in cloud games that support mouse and keyboard, even if "Mouse and keyboard" is off in settings. Console Remote Play does not accept mouse input.
+
+### 60 Hz screen while streaming
+
+The stream is 60 fps. In Gaming Mode Xenith sets the screen to 60 Hz for the session (gamescope `GAMESCOPE_DYNAMIC_REFRESH`, the value Steam's refresh-rate slider uses) and restores the previous rate afterwards. On the Deck OLED this removes the judder of 60 fps on a 90 Hz panel and saves battery. Turn it off in Settings > Streaming > "Screen at 60 Hz while streaming".
+
 ### Sleep and reconnect
 
 When the Deck sleeps during a session, Xenith remembers the console or cloud title and stops local streaming. After waking, it waits for network connectivity and attempts to reconnect to the same target. Disconnecting or signing out cancels pending recovery.
@@ -144,7 +152,7 @@ Xbox video uses 16:9, while the Deck screen is 16:10. Open the Xenith menu durin
 
 Fit is the default. Xenith remembers the selected mode separately for each cloud game and restores it on the next connection. Other games keep their own choices. For Remote Play, this control changes the global picture setting. These modes do not change the stream resolution or create a wider field of view.
 
-The shortcut and recovery logic have automated checks. Template selection, gyro feel, keyboard visibility, and recovery after actual Deck sleep still need verification on hardware.
+The shortcut and recovery logic have automated checks. Template selection, gyro feel, trackpad mouse, the 60 Hz switch, keyboard visibility, and recovery after actual Deck sleep still need verification on hardware.
 
 ## Hardware measurements
 

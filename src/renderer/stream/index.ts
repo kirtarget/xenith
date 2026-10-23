@@ -276,7 +276,7 @@ export class XenithStreamController implements StreamController {
     (globalThis as any).__xenithDims = { w: eff.dims.w, h: eff.dims.h };
     (globalThis as any).__xenithCaps = eff.caps;
 
-    const player: any = new xStreamingPlayer(holder.id, { ui_touchenabled: false, input_mousekeyboard: s.controllers.mouseKeyboard, input_legacykeyboard: true });
+    const player: any = new xStreamingPlayer(holder.id, { ui_touchenabled: false, input_mousekeyboard: s.controllers.mouseKeyboard || !!this.opts?.autoMouseKeyboard, input_legacykeyboard: true });
     player.setVibrationMode('Webview');
     player.setCodecPreferences('video/H264', { profiles: eff.codecProfiles });
     player._xenith_nexus_combo = false;
@@ -306,6 +306,7 @@ export class XenithStreamController implements StreamController {
       },
     });
     live.input.install();
+    live.input.autoMouseKeyboard = !!this.opts?.autoMouseKeyboard;
     live.input.apply(s);
     live.input.setPaused(this.overlayOpen); // survives re-sessions
 

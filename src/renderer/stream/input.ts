@@ -88,8 +88,12 @@ export class InputManager {
     this.scan();
   }
 
+  /** Steam Deck: mouse/keyboard forwarded for this session regardless of the setting (trackpad mouse in cloud games). */
+  autoMouseKeyboard = false;
+
   apply(s: Settings) {
     const c = s.controllers;
+    const mkb = c.mouseKeyboard || this.autoMouseKeyboard;
     this.guideCombo = c.guideCombo;
     this.overlayCombo = c.overlayCombo;
     this.triggerRumble = c.triggerRumble;
@@ -97,8 +101,8 @@ export class InputManager {
     this.player.setVibration(c.vibration);
     this.player.setGamepadDeadZone(Math.min(0.3, Math.max(0, c.deadZone)));
     this.player.setGamepadMaping(buildMapping(c.remap));
-    this.player._config.input_mousekeyboard = c.mouseKeyboard;
-    if (!c.mouseKeyboard && document.pointerLockElement) document.exitPointerLock();
+    this.player._config.input_mousekeyboard = mkb;
+    if (!mkb && document.pointerLockElement) document.exitPointerLock();
   }
 
   /** Virtual Xbox button. Sent straight into the input channel queue, so it works without a physical

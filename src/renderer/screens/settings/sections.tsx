@@ -34,6 +34,7 @@ export function sectionRows(section: SettingsSection, i18n: I18n, st: Settings, 
         { kind: 'seg', path: 'streaming.codec', title: s.streaming.codec, desc: s.streaming.codecDesc, options: opts(s.streaming.codecOpts, ['main', 'baseline']) },
         ...(deck ? [{ kind: 'custom', key: 'hw', deck: <HwDecodeDeckRow /> } as RowSpec] : []),
         { kind: 'toggle', path: 'streaming.autoConnectOnLaunch', title: s.streaming.autoConnect, desc: s.streaming.autoConnectDesc, deckTitle: s.streaming.autoConnectDeck, deckDesc: s.streaming.autoConnectDeckDesc },
+        ...(deck ? [{ kind: 'toggle', path: 'streaming.matchRefresh', title: s.streaming.matchRefresh, desc: s.streaming.matchRefreshDesc } as RowSpec] : []),
       ];
     }
     case 'video': {

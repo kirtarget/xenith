@@ -10,6 +10,8 @@ export interface StreamStartOptions {
   targetName: string;
   container: HTMLElement;         // element the engine mounts <video>/<canvas> into; UI owns layout
   settings: Settings;             // snapshot at start; live changes go through apply()
+  /** Forward mouse and keyboard even if the setting is off (Steam Deck: cloud title with mouse support, trackpad = mouse). */
+  autoMouseKeyboard?: boolean;
 }
 
 export type StreamState = 'idle' | 'starting' | 'streaming' | 'reconnecting' | 'ended' | 'error';

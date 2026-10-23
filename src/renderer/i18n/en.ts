@@ -162,6 +162,7 @@ export const en: Strings = {
       codecOpts: { main: 'H.264 Main', baseline: 'Baseline' },
       autoConnect: 'Connect to the last console on launch', autoConnectDeck: 'Connect on launch',
       autoConnectDesc: 'Xenith starts connecting to your last console as soon as it opens.',
+      matchRefresh: 'Screen at 60 Hz while streaming', matchRefreshDesc: 'The stream is 60 fps. Gaming Mode switches the screen to 60 Hz for the session and back afterwards: smoother motion on the Deck OLED and longer battery life.',
       autoConnectDeckDesc: 'Straight to the last console, handy from Gaming Mode',
       hwDecode: 'Hardware decoding', hwDecodeOn: 'On', hwDecodeOff: 'Unavailable', hwDecodeDeck: 'Through VA-API on the Deck GPU',
     },

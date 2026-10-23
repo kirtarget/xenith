@@ -13,6 +13,8 @@ import { log, logWarn } from './log';
 import { withTimeout } from './util';
 import { tagSteamGameWindow } from './steam-window';
 import { registerPowerEvents } from './power-events';
+import { createRefreshMatcher } from './platform/impl/refresh';
+import { run as runCmd } from './platform/impl/sys';
 
 // Fixed userData (<appData>/xenith) regardless of productName / dev vs packaged: the secure token
 // store lives in <userData>/secure and must stay where existing sign-ins put it.
@@ -46,11 +48,15 @@ function bootstrap() {
   let blocker: number | null = null;
   let quitting = false;
   let stopPowerEvents: (() => void) | null = null;
+  // Steam Deck gaming mode: panel at the stream's 60 Hz while streaming (see platform/impl/refresh.ts).
+  const refresh = process.platform === 'linux' && (process.env.GAMESCOPE_WAYLAND_DISPLAY || process.env.XDG_CURRENT_DESKTOP === 'gamescope')
+    ? createRefreshMatcher({ run: runCmd, enabled: () => settings.get().streaming.matchRefresh, log, warn: logWarn }) : null;
 
   const core = new XenithCore(settings, parseLaunchArgs(process.argv), (active) => {
     // keep the display awake only while streaming
     if (active > 0 && blocker === null) blocker = powerSaveBlocker.start('prevent-display-sleep');
     if (active === 0 && blocker !== null) { powerSaveBlocker.stop(blocker); blocker = null; }
+    if (refresh) void refresh.update(active);
   });
   log('app.start', { version: app.getVersion(), electron: process.versions.electron, chrome: process.versions.chrome, os: process.platform, intent: core.intent });
 
@@ -65,6 +71,7 @@ function bootstrap() {
     if (quitting) return;
     quitting = true;
     stopPowerEvents?.();
+    await refresh?.restore();
     await withTimeout(core.sessions.stopAll('user'), 6000);
     app.quit();
   };
