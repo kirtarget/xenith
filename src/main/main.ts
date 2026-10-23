@@ -12,6 +12,7 @@ import { onEvent, emit } from './events';
 import { log, logWarn } from './log';
 import { withTimeout } from './util';
 import { tagSteamGameWindow } from './steam-window';
+import { registerPowerEvents } from './power-events';
 
 // Fixed userData (<appData>/xenith) regardless of productName / dev vs packaged: the secure token
 // store lives in <userData>/secure and must stay where existing sign-ins put it.
@@ -44,6 +45,7 @@ function bootstrap() {
   let win: BrowserWindow | null = null;
   let blocker: number | null = null;
   let quitting = false;
+  let stopPowerEvents: (() => void) | null = null;
 
   const core = new XenithCore(settings, parseLaunchArgs(process.argv), (active) => {
     // keep the display awake only while streaming
@@ -62,6 +64,7 @@ function bootstrap() {
   const quit = async () => {
     if (quitting) return;
     quitting = true;
+    stopPowerEvents?.();
     await withTimeout(core.sessions.stopAll('user'), 6000);
     app.quit();
   };
@@ -102,6 +105,9 @@ function bootstrap() {
       } else if (input.key === 'F1') {
         event.preventDefault();
         emit({ type: 'menu', action: 'toggle-overlay' });
+      } else if (input.key === 'F2') {
+        event.preventDefault();
+        emit({ type: 'menu', action: 'press-guide' });
       } else if (input.key === 'Escape') {
         emit({ type: 'menu', action: 'toggle-overlay' }); // not prevented: dialogs may still use Esc
       } else if (input.key === 'I' && input.control && input.shift && (!app.isPackaged || process.env.XENITH_DEVTOOLS === '1')) {
@@ -132,6 +138,7 @@ function bootstrap() {
 
   app.whenReady().then(() => {
     Menu.setApplicationMenu(null);
+    stopPowerEvents = registerPowerEvents(state => emit({ type: 'power', state }), () => core.sessions.stopAll('replaced'));
     createWindow();
   });
 

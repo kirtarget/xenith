@@ -37,7 +37,11 @@ export class PostProcessor {
   /** Called on the first decoded frame (canvas paths need real video dimensions). */
   setReady() { this.ready = true; this.reconcile(); }
 
-  apply(cfg: PostConfig) { this.cfg = cfg; this.reconcile(); }
+  apply(cfg: PostConfig) {
+    if (this.mode === 'fsr' && this.cfg?.fit !== cfg.fit) this.teardownMode();
+    this.cfg = cfg;
+    this.reconcile();
+  }
 
   dispose() {
     this.teardownMode();
@@ -82,11 +86,10 @@ export class PostProcessor {
     if (c.saturation !== 1) f.push(`saturate(${c.saturation})`);
     this.holder.style.filter = f.join(' ');
     const m = this.want();
-    if (m !== this.mode) { this.teardownMode(); this.setupMode(m, c); }
+    if (m !== this.mode || (resized && m === 'fsr')) { this.teardownMode(); this.setupMode(m, c); }
     else if (m === 'cas') this.cas?.updateOptions({ sharpness: casFactor(c.sharpness) } as any, true);
     else if (m === 'fsr') this.player._videoComponent?.setRcasStops(rcasStops(c.sharpness));
     if (this.cas) this.cas.getCanvas().style.objectFit = c.fit;
-    void resized;
   }
 
   private setupMode(m: PostMode, c: PostConfig) {

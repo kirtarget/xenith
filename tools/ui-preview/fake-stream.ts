@@ -1,6 +1,7 @@
 // ⚠ PREVIEW ONLY — fake StreamController: a dark canvas "game" and synthetic stats. Aliased in place of
 // src/renderer/stream/index.ts by tools/ui-preview/build.mjs. Implements the shared contract exactly.
 import type { StageEvent } from '../../src/shared/api';
+import { fitForTarget } from '../../src/shared/video-fit';
 import type { StreamController, StreamControllerEvents, StreamStartOptions, StreamState } from '../../src/shared/stream-controller';
 
 export type FakeMode = 'connecting' | 'connecting-cloud' | 'error-ice' | 'streaming' | 'reconnecting';
@@ -15,10 +16,11 @@ export function createStreamController(): StreamController {
   const setState = (s: StreamState) => { state = s; emit('state', s); };
   let timers: number[] = [];
   let canvas: HTMLCanvasElement | null = null;
+  let target: Pick<StreamStartOptions, 'kind' | 'targetId'> | null = null;
 
   const stage = (ev: StageEvent) => emit('stage', ev);
 
-  const draw = (c: HTMLCanvasElement) => {
+  const draw = (c: HTMLCanvasElement, label: string) => {
     const g = c.getContext('2d');
     if (!g) return;
     const w = c.width, h = c.height;
@@ -27,18 +29,20 @@ export function createStreamController(): StreamController {
     g.fillStyle = '#16202C'; g.fillRect(w * 0.08, h * 0.32, w * 0.34, h * 0.22);
     g.fillStyle = '#192433'; g.fillRect(w * 0.5, h * 0.2, w * 0.18, h * 0.34);
     g.fillStyle = '#3A4A60'; g.font = `${Math.round(h / 50)}px sans-serif`; g.textAlign = 'center';
-    g.fillText('[Изображение игры — FIXTURE]', w / 2, h / 2);
+    g.fillText(label, w / 2, h / 2);
   };
 
   return {
     get state() { return state; },
     on(ev, fn) { (fns[ev] as Set<unknown>).add(fn); return () => (fns[ev] as Set<unknown>).delete(fn); },
     async start(opts: StreamStartOptions) {
+      target = opts;
       setState('starting');
       const now = Date.now();
       canvas = document.createElement('canvas');
       canvas.width = 1920; canvas.height = 1080;
-      draw(canvas);
+      Object.assign(canvas.style, { width: '100%', height: '100%', objectFit: fitForTarget(opts.settings, opts) });
+      draw(canvas, opts.settings.ui.lang === 'en' ? '[Game video - FIXTURE]' : '[Изображение игры — FIXTURE]');
       opts.container.replaceChildren(canvas);
       const mode = fakeStreamConfig.mode;
       stage({ stage: 'auth', status: 'active', at: now - 6600 });
@@ -71,7 +75,7 @@ export function createStreamController(): StreamController {
       if (mode === 'reconnecting') timers.push(window.setTimeout(() => setState('reconnecting'), 50));
     },
     async stop() { timers.forEach(t => clearInterval(t)); timers = []; setState('ended'); },
-    apply() { /* fixture: nothing to apply */ },
+    apply(settings) { if (canvas) canvas.style.objectFit = fitForTarget(settings, target); },
     pressGuide() { /* fixture */ },
     requestKeyframe() { /* fixture */ },
   };

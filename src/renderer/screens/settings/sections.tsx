@@ -10,6 +10,7 @@ import { loadHaptics, resetSettings, toast, updateSettings } from '../../state/a
 import { getState, setState, useApp, type SettingsSection } from '../../state/store';
 import { DeckRow, useAsync, type Opt, type RowSpec } from './rows';
 import { reportAudioOutputs } from '../../lib/api';
+import { cancelResume } from '../../state/session';
 
 const opts = (rec: Record<string, string>, keys?: string[]): Opt[] => (keys ?? Object.keys(rec)).map(k => ({ value: k, label: rec[k] }));
 
@@ -381,6 +382,10 @@ function SteamBlock({ deck }: { deck?: boolean }) {
   const t = s.settings.steam;
   const [st, reload] = useAsync<SteamStatus>(() => window.xenith.steamStatus());
   const keep = useApp(x => x.settings.steam.maintainLibraryShortcut);
+  const consoles = useApp(x => x.consoles);
+  const selectedServerId = useApp(x => x.selectedServerId);
+  const isSteamDeck = useApp(x => x.platform?.isSteamDeck);
+  const console = consoles?.find(c => c.serverId === selectedServerId) ?? consoles?.[0];
   const [busy, setBusy] = useState(false);
   const statusText = !st ? s.common.loading : !st.installed ? t.notInstalled : st.running ? t.running : t.stopped;
   const addNow = async () => {
@@ -388,11 +393,24 @@ function SteamBlock({ deck }: { deck?: boolean }) {
     try { const r = await window.xenith.steamAddLibraryShortcut(); toast(r.message || t.restartSteam, r.ok ? 'ok' : 'bad', 6000); reload(); }
     finally { setBusy(false); }
   };
+  const run = async (action: () => Promise<{ ok: boolean; message: string }>) => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const result = await action();
+      toast(result.message || (result.ok ? t.restartSteam : t.actionFailed), result.ok ? 'ok' : 'bad', 10000);
+    } catch { toast(t.actionFailed, 'bad'); }
+    finally { setBusy(false); }
+  };
+  const addConsole = () => { if (console) void run(() => window.xenith.steamAddConsoleShortcut(console.serverId)); };
+  const installLayout = () => void run(() => window.xenith.steamInstallDeckLayout());
   if (deck) {
     return (
       <>
         <DeckRow title={t.status} value={statusText} valueTone={st?.installed ? 'ok' : undefined} onActivate={reload} />
         <DeckRow title={t.library} desc={t.libraryDesc} value={keep ? s.common.yes : s.common.no} onActivate={() => updateSettings({ steam: { maintainLibraryShortcut: !keep } })} onStep={() => updateSettings({ steam: { maintainLibraryShortcut: !keep } })} disabled={!st?.installed} />
+        <DeckRow navId="steam-console" title={t.consoleTile} desc={console ? `${console.name}. ${t.consoleTileDesc}` : t.noConsole} value={t.addNow} onActivate={addConsole} disabled={!st?.installed || !console || busy} />
+        {isSteamDeck && <DeckRow navId="steam-layout" title={t.deckLayout} desc={t.deckLayoutDesc} value={t.installLayout} onActivate={installLayout} disabled={!st?.installed || busy} />}
       </>
     );
   }
@@ -409,6 +427,8 @@ function SteamBlock({ deck }: { deck?: boolean }) {
           <input type="checkbox" role="switch" className="toggle" data-nav="" aria-labelledby="steam-lib" disabled={!st?.installed} checked={keep} onChange={e => updateSettings({ steam: { maintainLibraryShortcut: e.currentTarget.checked } })} />
         </span>
       </label>
+      <SettingRow title={t.consoleTile} desc={console ? `${console.name}. ${t.consoleTileDesc}` : t.noConsole} control={<Button navId="steam-console" variant="secondary" disabled={!st?.installed || !console || busy} onClick={addConsole}>{t.addNow}</Button>} />
+      {isSteamDeck && <SettingRow title={t.deckLayout} desc={t.deckLayoutDesc} control={<Button navId="steam-layout" variant="secondary" disabled={!st?.installed || busy} onClick={installLayout}>{t.installLayout}</Button>} />}
     </>
   );
 }
@@ -511,7 +531,7 @@ function ResetRows({ deck }: { deck?: boolean }) {
         confirmLabel={a.resetAllConfirm}
         danger
         onCancel={() => setWhich(null)}
-        onConfirm={async () => { await window.xenith.resetAllData(); setWhich(null); }}
+        onConfirm={async () => { cancelResume(); await window.xenith.resetAllData(); setWhich(null); }}
       />
     </>
   );

@@ -619,7 +619,7 @@ export default class VideoComponent {
             aspect = ratioWidth / ratioHeight
         }
 
-        if (video_format === 'Stretch' || video_format === 'Zoom') {
+        if (video_format === 'Stretch') {
             width = this._video.clientWidth
             height = this._video.clientHeight
         } else {
@@ -629,7 +629,7 @@ export default class VideoComponent {
             
             let displayWidth, displayHeight
             
-            if (videoAspectRatio > containerAspectRatio) {
+            if (video_format === 'Zoom' ? videoAspectRatio < containerAspectRatio : videoAspectRatio > containerAspectRatio) {
                 // 视频更宽，上下有黑边
                 displayWidth = videoRect.width
                 displayHeight = videoRect.width / videoAspectRatio
@@ -740,7 +740,7 @@ export default class VideoComponent {
         // check dom resize
         const resizeObserver = new ResizeObserver(() => {
             const video_format = this._client._video_format
-            if (video_format === 'Stretch' || video_format === 'Zoom') {
+            if (video_format === 'Stretch') {
                 width = this._video.clientWidth
                 height = this._video.clientHeight
             } else {
@@ -750,7 +750,7 @@ export default class VideoComponent {
                 
                 let displayWidth, displayHeight
                 
-                if (videoAspectRatio > containerAspectRatio) {
+                if (video_format === 'Zoom' ? videoAspectRatio < containerAspectRatio : videoAspectRatio > containerAspectRatio) {
                     // 视频更宽，上下有黑边
                     displayWidth = videoRect.width
                     displayHeight = videoRect.width / videoAspectRatio

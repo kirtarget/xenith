@@ -3,6 +3,8 @@ import { build } from 'esbuild';
 import { cpSync, existsSync, mkdirSync } from 'node:fs';
 
 const common = { bundle: true, sourcemap: true, logLevel: 'info', target: 'es2022' };
+mkdirSync('dist', { recursive: true });
+cpSync('build/icon.png', 'dist/icon.png');
 
 await build({ ...common, entryPoints: ['src/main/main.ts'], outfile: 'dist/main.js', platform: 'node', format: 'cjs', external: ['electron'] });
 await build({ ...common, entryPoints: ['src/preload/preload.ts'], outfile: 'dist/preload.js', platform: 'node', format: 'cjs', external: ['electron'] });

@@ -159,7 +159,7 @@ export class XenithStreamController implements StreamController {
     if (this._state === 'starting' || this._state === 'streaming' || this._state === 'reconnecting') throw new Error('stream already active');
     this.opts = opts;
     this.settings = opts.settings;
-    this.eff = effectiveSettings(opts.settings);
+    this.eff = effectiveSettings(opts.settings, opts);
     this.stopping = false;
     this.recovering = false;
     this.reSessions = 0;
@@ -497,7 +497,7 @@ export class XenithStreamController implements StreamController {
   apply(settings: Settings): void {
     const prev = this.eff;
     this.settings = settings;
-    this.eff = effectiveSettings(settings);
+    this.eff = effectiveSettings(settings, this.opts);
     const live = this.live;
     if (!live) return;
     live.input.apply(settings);

@@ -5,10 +5,58 @@ import { getStreamController } from '../stream-adapter';
 import { parseIpcError } from '../lib/api';
 import { addHistoryEntry, go, loadHistory, toast, updateSettings } from './actions';
 import { emptyStages, getState, setSession, setState, STAGES, type SessionState } from './store';
+import { createResumeController, waitForResume, type ResumeTarget } from './resume';
 
 let container: HTMLElement | null = null;
 let unsubs: Array<() => void> = [];
 let lossWindow: Array<{ at: number; lost: number }> = [];
+let connectionGeneration = 0;
+let stopping = Promise.resolve();
+
+const resume = createResumeController({
+  stop: releaseForSleep,
+  connect: async (target, signal) => {
+    if (signal.aborted) return false;
+    await connectSession(target.kind, target.targetId, target.targetName, signal);
+    return !signal.aborted && getState().session?.phase === 'streaming';
+  },
+  online: () => navigator.onLine,
+  allowed: () => getState().account?.signedIn === true,
+  waiting: target => { teardown(); prepareConnection(target, 'reconnecting'); },
+  now: () => Date.now(),
+  wait: waitForResume,
+  exhausted: target => {
+    if (getState().session?.phase === 'error') return;
+    if (!getState().session) prepareConnection(target, 'reconnecting');
+    fail({ code: 'network', message: 'Reconnect after sleep timed out' });
+  },
+});
+
+export function cancelResume(): void {
+  const pending = resume.state !== 'idle';
+  resume.cancel();
+  const s = getState().session;
+  if (pending && s?.phase === 'connecting' && s.engineState === 'reconnecting') endSession();
+}
+
+export function handlePowerState(state: 'suspend' | 'resume'): void {
+  if (state === 'resume') { void resume.resume(); return; }
+  const s = getState().session;
+  const target: ResumeTarget | null = s && s.phase !== 'error' && s.phase !== 'idle'
+    ? { kind: s.kind, targetId: s.targetId, targetName: s.targetName } : null;
+  resume.suspend(target);
+}
+
+function releaseForSleep(): Promise<void> {
+  connectionGeneration++;
+  teardown();
+  let stopped: Promise<void>;
+  try { stopped = getStreamController().stop('user'); }
+  catch { stopped = Promise.resolve(); }
+  finally { endSession(); }
+  stopping = Promise.all([stopping, stopped.catch(() => undefined)]).then(() => undefined);
+  return stopping;
+}
 
 export function registerStreamContainer(el: HTMLElement | null): void { container = el; }
 
@@ -54,19 +102,33 @@ function currentStage(s: SessionState): StageId | null {
 }
 
 export async function connect(kind: SessionKind, targetId: string, targetName: string): Promise<void> {
+  cancelResume();
+  await connectSession(kind, targetId, targetName);
+}
+
+function prepareConnection(target: ResumeTarget, engineState: 'idle' | 'reconnecting' = 'idle'): void {
   const st = getState();
-  if (st.session && st.session.phase !== 'error') return;
-  teardown();
   const now = Date.now();
   setState({
     lastSessionError: null,
     sheet: null,
     session: {
-      phase: 'connecting', engineState: 'idle', kind, targetId, targetName, startedAt: now, firstFrameAt: null,
+      phase: 'connecting', engineState, ...target, startedAt: now, firstFrameAt: null,
       stages: emptyStages(), error: null, failedStage: null, stats: null, lossTrend: 0, overlayOpen: false, lastRumble: null, audioLevel: 0,
     },
-    route: { ...st.route, screen: 'connecting', returnTo: kind === 'cloud' ? 'cloud' : 'home' },
+    route: { ...st.route, screen: 'connecting', returnTo: target.kind === 'cloud' ? 'cloud' : 'home' },
   });
+}
+
+async function connectSession(kind: SessionKind, targetId: string, targetName: string, signal?: AbortSignal): Promise<void> {
+  await stopping;
+  if (signal?.aborted) return;
+  const st = getState();
+  const waiting = signal && st.session?.phase === 'connecting' && st.session.engineState === 'reconnecting';
+  if (st.session && st.session.phase !== 'error' && !waiting) return;
+  teardown();
+  const generation = ++connectionGeneration;
+  prepareConnection({ kind, targetId, targetName });
   if (kind === 'home') updateSettings({ streaming: { lastServerId: targetId } });
   lossWindow = [];
 
@@ -74,6 +136,7 @@ export async function connect(kind: SessionKind, targetId: string, targetName: s
   try { ctrl = getStreamController(); } catch (e) { fail({ code: 'unknown', message: String(e) }); return; }
   unsubs = [
     ctrl.on('state', s => {
+      if (generation !== connectionGeneration) return;
       setSession({ engineState: s });
       if (s === 'streaming') setSession(x => ({ phase: 'streaming', firstFrameAt: x.firstFrameAt ?? Date.now() }));
       else if (s === 'reconnecting') setSession({ phase: 'reconnecting' });
@@ -94,18 +157,23 @@ export async function connect(kind: SessionKind, targetId: string, targetName: s
     ctrl.on('audioLevel', rms => setSession({ audioLevel: rms })),
   ];
   if (!container) { fail({ code: 'unknown', message: 'stream container not mounted' }); return; }
+  const abort = () => { if (generation === connectionGeneration) void releaseForSleep(); };
+  signal?.addEventListener('abort', abort, { once: true });
   try {
+    if (signal?.aborted) { abort(); return; }
     await ctrl.start({ kind, targetId, targetName, container, settings: getState().settings });
   } catch (e) {
+    if (generation !== connectionGeneration) return;
     const cur = getState().session;
     if (cur && cur.phase !== 'error') fail(parseIpcError(e));
-  }
+  } finally { signal?.removeEventListener('abort', abort); }
 }
 
 /** User cancels while connecting, or disconnects from the side panel. */
 export async function disconnect(): Promise<void> {
+  cancelResume();
   const s = getState().session;
-  if (!s) return;
+  if (!s) { await stopping; return; }
   try { await getStreamController().stop('user'); } catch { /* engine already gone */ }
   endSession();
 }
@@ -113,6 +181,7 @@ export async function disconnect(): Promise<void> {
 function endSession(): void {
   const s = getState().session;
   if (!s) return;
+  connectionGeneration++;
   teardown();
   const back = s.kind === 'cloud' ? 'cloud' : 'home';
   setState(st => ({ session: null, route: { ...st.route, screen: back } }));
@@ -122,6 +191,7 @@ function endSession(): void {
 
 /** Dismiss an error card and return to where the session started. */
 export function dismissError(): void {
+  cancelResume();
   const s = getState().session;
   teardown();
   setState(st => ({ session: null, route: { ...st.route, screen: s?.kind === 'cloud' ? 'cloud' : 'home' } }));
@@ -156,6 +226,7 @@ function teardown(): void {
 export function handleMainEvent(ev: XenithEvent): void {
   const s = getState().session;
   switch (ev.type) {
+    case 'power': handlePowerState(ev.state); break;
     case 'stage': if (s && s.phase === 'connecting') applyStage(ev.ev); break;
     case 'sessionError': if (s) fail(ev.error); break;
     case 'sessionEnded':
@@ -165,6 +236,7 @@ export function handleMainEvent(ev: XenithEvent): void {
     case 'menu':
       // Main already toggles fullscreen on F10/F11 — informational only.
       if (ev.action === 'toggle-overlay') toggleOverlay();
+      else if (ev.action === 'press-guide') pressGuide();
       break;
   }
 }

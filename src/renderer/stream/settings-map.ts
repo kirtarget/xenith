@@ -1,5 +1,6 @@
 // Maps user Settings to the concrete knobs the stream engine turns.
-import type { Settings, VideoFit } from '../../shared/api';
+import type { SessionKind, Settings, VideoFit } from '../../shared/api';
+import { fitForTarget } from '../../shared/video-fit';
 
 export type ResolutionAlias = '1440' | '1080HQ' | '1080' | '720HQ' | '720';
 
@@ -32,7 +33,7 @@ export const QUALITY_JITTER_TARGET_MS = 40;
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, Number.isFinite(v) ? v : lo));
 
-export function effectiveSettings(s: Settings): EffectiveSettings {
+export function effectiveSettings(s: Settings, target: { kind: SessionKind; targetId: string } | null = null): EffectiveSettings {
   const st = s.streaming;
   const battery = st.profile === 'battery';
   const customKbps = clamp(st.customKbps, 5000, 40000);
@@ -59,6 +60,6 @@ export function effectiveSettings(s: Settings): EffectiveSettings {
     resolutionAlias, dims, caps: {},
     codecProfiles: st.codec === 'baseline' ? ['42e', '420'] : ['4d'],
     capKbps, requestKbps, jitterBufferTargetMs,
-    sharpness, fsr: !battery && s.video.upscaleFsr, fit: s.video.fit,
+    sharpness, fsr: !battery && s.video.upscaleFsr, fit: fitForTarget(s, target),
   };
 }

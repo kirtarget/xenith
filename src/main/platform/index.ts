@@ -1,6 +1,6 @@
 // Platform layer contract (main process). OWNER of implementation: platform agent.
 // The core agent imports ONLY these functions; until implemented they throw 'not implemented'.
-import type { GpuStatus, HapticsDiagnostics, PlatformInfo, Settings, SteamStatus, CloudTitle } from '../../shared/api';
+import type { GpuStatus, HapticsDiagnostics, PlatformInfo, Settings, SteamStatus, CloudTitle, ConsoleInfo } from '../../shared/api';
 
 export interface PlatformLayer {
   /** Called before app 'ready': applies Chromium switches (GPU mode, ANGLE backend, VA-API on Linux, low-latency flags). */
@@ -11,6 +11,8 @@ export interface PlatformLayer {
   steam: {
     status(): Promise<SteamStatus>;
     addLibraryShortcut(): Promise<{ ok: boolean; message: string }>;
+    addConsoleShortcut(console: ConsoleInfo): Promise<{ ok: boolean; message: string }>;
+    installDeckLayout(): Promise<{ ok: boolean; message: string }>;
     addCloudShortcut(title: CloudTitle): Promise<{ ok: boolean; message: string }>;
     resyncArtwork(titles: CloudTitle[]): Promise<{ ok: boolean; count: number }>;
     shortcutTitleIds(): Promise<string[]>;   // xCloud titleIds that already have a Steam shortcut
@@ -28,6 +30,8 @@ export let platform: PlatformLayer = {
   steam: {
     status: notImplemented('steam.status') as any,
     addLibraryShortcut: notImplemented('steam.addLibraryShortcut') as any,
+    addConsoleShortcut: notImplemented('steam.addConsoleShortcut') as any,
+    installDeckLayout: notImplemented('steam.installDeckLayout') as any,
     addCloudShortcut: notImplemented('steam.addCloudShortcut') as any,
     resyncArtwork: notImplemented('steam.resyncArtwork') as any,
     shortcutTitleIds: async () => [],

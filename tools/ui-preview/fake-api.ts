@@ -29,13 +29,21 @@ function merge<T>(a: T, b: unknown): T {
 }
 
 export function installFakeApi(cfg: FakeConfig): void {
+  const english = cfg.lang === 'en';
   let settings = fx.fxSettings(cfg.deck);
   settings.ui.lang = cfg.lang;
   settings.ui.scale = cfg.scale;
   settings.ui.layout = cfg.layout;
   let account = cfg.signedIn ? { ...fx.fxAccount, hasCloud: cfg.hasCloud } : { signedIn: false, gamertag: null, avatarUrl: null, hasCloud: null };
-  const history = cfg.history === 'full' ? fx.fxHistory() : [];
-  const cloud = fx.fxCloud();
+  const history = cfg.history === 'full' ? fx.fxHistory().map(entry => english && entry.kind === 'cloud' ? { ...entry, targetName: 'Demo game 3' } : entry) : [];
+  const cloud = fx.fxCloud().map((title, i) => english ? {
+    ...title,
+    name: /[А-Яа-яЁё]/.test(title.name) ? i === 3 ? 'A long demo game title to check text truncation' : `Demo game ${i + 1}` : title.name,
+    publisher: 'Fixture Studios',
+  } : title);
+  const regions = fx.fxRegions.map((region, i) => english ? { ...region, name: ['Sweden', 'Germany', 'Poland', 'Netherlands'][i] } : region);
+  const steamActions: string[] = [];
+  (window as unknown as { __steamActions: string[] }).__steamActions = steamActions;
 
   const api: XenithApi & Partial<XenithApiFull> = {
     platform: () => delay(fx.fxPlatform(cfg.deck)),
@@ -48,9 +56,9 @@ export function installFakeApi(cfg: FakeConfig): void {
     loginStart: () => delay({ userCode: 'CF62LZYS', verificationUri: 'https://www.microsoft.com/link', expiresAt: Date.now() + 14.5 * 60000 }, 60),
     loginCancel: () => delay(undefined),
     signOut: () => { account = { signedIn: false, gamertag: null, avatarUrl: null, hasCloud: null }; return delay(undefined); },
-    consoles: () => cfg.consoles === 'loading' ? never() : delay(cfg.consoles === 'empty' ? [] : cfg.consoles === 'two' ? fx.fxConsoles2 : fx.fxConsoles, 40),
+    consoles: () => cfg.consoles === 'loading' ? never() : delay(cfg.consoles === 'empty' ? [] : cfg.consoles === 'two' ? fx.fxConsoles2.map((console, i) => english && i === 1 ? { ...console, name: 'Bedroom Xbox' } : console) : fx.fxConsoles, 40),
     cloudTitles: () => cfg.cloudLoading ? never() : delay(cloud, 40),
-    regions: () => delay(fx.fxRegions),
+    regions: () => delay(regions),
     history: () => delay(history),
     historyClear: () => delay(undefined),
     sessionStart: () => delay({ sessionId: 'FIXTURE-SESSION' }),
@@ -60,12 +68,15 @@ export function installFakeApi(cfg: FakeConfig): void {
     sessionReport: () => undefined,
     sessionStage: () => undefined,
     steamStatus: () => delay(fx.fxSteam),
-    steamAddLibraryShortcut: () => delay({ ok: true, message: 'Ярлык добавлен (заглушка)' }),
-    steamAddCloudShortcut: () => delay({ ok: true, message: 'Игра добавлена в Steam (заглушка)' }),
+    steamAddLibraryShortcut: () => delay({ ok: true, message: english ? 'Shortcut added (demo)' : 'Ярлык добавлен (заглушка)' }),
+    steamAddConsoleShortcut: (serverId) => { steamActions.push(`console:${serverId}`); return delay({ ok: true, message: english ? 'Xbox shortcut added (demo)' : 'Ярлык Xbox добавлен (демо)' }); },
+    steamInstallDeckLayout: () => { steamActions.push('layout'); return delay({ ok: true, message: english ? 'Template installed. Restart Steam and choose Xenith in Templates.' : 'Шаблон установлен. Перезапустите Steam и выберите Xenith в шаблонах.' }); },
+    showSteamKeyboard: () => { (window as unknown as { __keyboardRequests: number }).__keyboardRequests = ((window as unknown as { __keyboardRequests?: number }).__keyboardRequests ?? 0) + 1; return delay(true); },
+    steamAddCloudShortcut: () => delay({ ok: true, message: english ? 'Game added to Steam (demo)' : 'Игра добавлена в Steam (заглушка)' }),
     steamResyncArtwork: () => delay({ ok: true, count: 12 }),
-    hapticsDiagnostics: () => delay({ ...fx.fxHaptics, rumble: { ...fx.fxHaptics.rumble, lastEventAt: Date.now() - 3000 } }),
+    hapticsDiagnostics: () => delay({ ...fx.fxHaptics, gameAudio: english ? { ...fx.fxHaptics.gameAudio, deviceLabel: 'Speakers' } : fx.fxHaptics.gameAudio, rumble: { ...fx.fxHaptics.rumble, lastEventAt: Date.now() - 3000 } }),
     gpuStatus: () => delay(cfg.deck ? fx.fxGpuDeck : fx.fxGpu),
-    audioOutputs: () => delay([{ deviceId: 'fx-speakers', label: 'Динамики (заглушка)' }, { deviceId: 'fx-hdmi', label: 'HDMI-телевизор (заглушка)' }]),
+    audioOutputs: () => delay([{ deviceId: 'fx-speakers', label: english ? 'Speakers (demo)' : 'Динамики (заглушка)' }, { deviceId: 'fx-hdmi', label: english ? 'HDMI TV (demo)' : 'HDMI-телевизор (заглушка)' }]),
     window: {
       toggleFullscreen: () => delay(false),
       setFullscreen: (on: boolean) => delay(on),

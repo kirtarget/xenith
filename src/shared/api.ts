@@ -33,6 +33,7 @@ export interface Settings {
     contrast: number;              // 0.5–1.5
     saturation: number;            // 0.5–1.5
     fit: VideoFit;
+    cloudFits: Record<string, VideoFit>;
     hud: HudMode;
     hudCorner: HudCorner;
   };
@@ -76,13 +77,13 @@ export interface Settings {
 
 export const DEFAULT_SETTINGS: Settings = {
   streaming: { profile: 'low-latency', resolution: 'auto', bitrateMode: 'auto', customKbps: 20000, codec: 'main', autoConnectOnLaunch: false, lastServerId: null },
-  video: { sharpness: 0, upscaleFsr: false, brightness: 1, contrast: 1, saturation: 1, fit: 'contain', hud: 'off', hudCorner: 'top-left' },
+  video: { sharpness: 0, upscaleFsr: false, brightness: 1, contrast: 1, saturation: 1, fit: 'contain', cloudFits: {}, hud: 'off', hudCorner: 'top-left' },
   audio: { outputDeviceId: '', volume: 1 },
   controllers: { vibration: true, triggerRumble: true, deadZone: 0.1, guideCombo: true, overlayCombo: true, mouseKeyboard: false, remap: {} },
   haptics: { bridgeMode: false },
   network: { regionName: null, preferIPv6: false },
   steam: { maintainLibraryShortcut: false, promptCloudShortcut: true, artworkSource: 'xcloud' },
-  ui: { lang: 'ru', scale: 'm', startFullscreen: false, showTips: true, layout: 'auto' },
+  ui: { lang: 'en', scale: 'm', startFullscreen: false, showTips: true, layout: 'auto' },
   advanced: { gpuMode: 'high-performance', renderPipeline: 'auto' },
 };
 
@@ -268,12 +269,15 @@ export interface XenithApi {
 
   steamStatus(): Promise<SteamStatus>;
   steamAddLibraryShortcut(): Promise<{ ok: boolean; message: string }>;
+  steamAddConsoleShortcut(serverId: string): Promise<{ ok: boolean; message: string }>;
+  steamInstallDeckLayout(): Promise<{ ok: boolean; message: string }>;
   steamAddCloudShortcut(titleId: string): Promise<{ ok: boolean; message: string }>;
   steamResyncArtwork(): Promise<{ ok: boolean; count: number }>;
 
   hapticsDiagnostics(): Promise<HapticsDiagnostics>;
   gpuStatus(): Promise<GpuStatus>;
   audioOutputs(): Promise<{ deviceId: string; label: string }[]>; // filled by renderer enumerateDevices, cached by main
+  showSteamKeyboard(): Promise<boolean>;
 
   window: {
     toggleFullscreen(): Promise<boolean>;
@@ -298,7 +302,8 @@ export type XenithEvent =
   | { type: 'sessionEnded'; sessionId: string; entry: HistoryEntry | null }
   | { type: 'settings'; settings: Settings }
   | { type: 'consoles'; consoles: ConsoleInfo[] }
-  | { type: 'menu'; action: 'toggle-overlay' | 'toggle-fullscreen' }; // from global shortcuts F1/F10/F11/Esc
+  | { type: 'power'; state: 'suspend' | 'resume' }
+  | { type: 'menu'; action: 'toggle-overlay' | 'toggle-fullscreen' | 'press-guide' };
 
 export type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] };
 

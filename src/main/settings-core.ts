@@ -2,8 +2,9 @@
 // enum validation and numeric clamping. Unknown keys are dropped; missing keys get defaults,
 // so files written by older or newer versions always load.
 import { DEFAULT_SETTINGS, type DeepPartial, type Settings } from '../shared/api';
+import { MAX_CLOUD_FITS } from '../shared/video-fit';
 
-interface Spec { enum?: readonly string[]; min?: number; max?: number; int?: boolean; nullableString?: boolean; record?: boolean; maxLen?: number }
+interface Spec { enum?: readonly string[]; min?: number; max?: number; int?: boolean; nullableString?: boolean; record?: boolean; maxLen?: number; keyPattern?: RegExp; maxEntries?: number }
 
 const SPEC: Record<string, Spec> = {
   'streaming.profile': { enum: ['low-latency', 'quality', 'battery'] },
@@ -17,6 +18,7 @@ const SPEC: Record<string, Spec> = {
   'video.contrast': { min: 0.5, max: 1.5 },
   'video.saturation': { min: 0.5, max: 1.5 },
   'video.fit': { enum: ['contain', 'cover', 'fill'] },
+  'video.cloudFits': { record: true, enum: ['contain', 'cover', 'fill'], keyPattern: /^(?!\.{1,2}$)(?!__proto__$|constructor$|prototype$)[A-Za-z0-9._-]{1,64}$/, maxEntries: MAX_CLOUD_FITS },
   'video.hud': { enum: ['off', 'compact', 'full'] },
   'video.hudCorner': { enum: ['top-left', 'top-right', 'bottom-left', 'bottom-right'] },
   'audio.outputDeviceId': { maxLen: 512 },
@@ -39,7 +41,15 @@ function normalize(def: any, raw: any, path: string): any {
   if (spec.record) {
     if (!isObj(raw)) return { ...def };
     const o: Record<string, string> = {};
-    for (const [k, v] of Object.entries(raw)) if (typeof v === 'string' && k.length <= 32 && v.length <= 32) o[k] = v;
+    let count = 0;
+    for (const [k, v] of Object.entries(raw)) {
+      if (count >= (spec.maxEntries ?? Infinity)) break;
+      if (typeof v !== 'string' || v.length > 32) continue;
+      if (spec.keyPattern ? !spec.keyPattern.test(k) : k.length > 32) continue;
+      if (spec.enum && !spec.enum.includes(v)) continue;
+      o[k] = v;
+      count++;
+    }
     return o;
   }
   if (spec.nullableString) {
@@ -75,7 +85,7 @@ export function normalizeSettings(raw: unknown): Settings {
   return normalize(DEFAULT_SETTINGS, raw, '') as Settings;
 }
 
-/** Deep merge; `controllers.remap` is replaced as a whole (it is a map, not a settings group). */
+/** Record settings are replaced as a whole rather than merged as settings groups. */
 function merge(base: any, patch: any, path: string): any {
   if (!isObj(patch) || SPEC[path]?.record) return patch === undefined ? base : patch;
   if (!isObj(base)) return patch;

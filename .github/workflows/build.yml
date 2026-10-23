@@ -33,8 +33,11 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2
       - run: npm ci
+      - run: node tools/check-agent-docs.mjs
       - run: npx tsc --noEmit -p tsconfig.json
       - run: node tools/platform-test/run-tests.mjs
+      - run: node tools/core-test/run.mjs
+      - run: node tools/stream-test/run-input-test.mjs
       - run: node build.mjs
       - name: Package
         run: npx electron-builder ${{ matrix.target }} --publish never

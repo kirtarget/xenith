@@ -66,7 +66,7 @@ export type Format = ReturnType<typeof makeFormat>;
 export interface I18n { lang: Lang; s: Strings; f: Format; t: (path: string, ...args: unknown[]) => string }
 
 export function makeI18n(lang: Lang): I18n {
-  const s = dictionaries[lang] ?? ru;
+  const s = dictionaries[lang] ?? en;
   const f = makeFormat(lang);
   /** Path lookup, e.g. t('home.losses', 3) → "потери". Prefer the typed `s` object in components. */
   const t = (path: string, ...args: unknown[]): string => {
@@ -78,5 +78,5 @@ export function makeI18n(lang: Lang): I18n {
   return { lang, s, f, t };
 }
 
-export const I18nContext = createContext<I18n>(makeI18n('ru'));
+export const I18nContext = createContext<I18n>(makeI18n('en'));
 export const useI18n = () => useContext(I18nContext);

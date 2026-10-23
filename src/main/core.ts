@@ -174,6 +174,17 @@ export class XenithCore {
   async steamAddLibraryShortcut() {
     try { return await platform.steam.addLibraryShortcut(); } catch (e) { return { ok: false, message: friendly(e) }; }
   }
+  async steamAddConsoleShortcut(serverId: string) {
+    if (typeof serverId !== 'string' || !/^[A-Za-z0-9._-]{1,64}$/.test(serverId) || serverId === '.' || serverId === '..') return { ok: false, message: 'unknown_console' };
+    try {
+      const console = (await this.consoles()).find(c => c.serverId === serverId);
+      if (!console) return { ok: false, message: 'unknown_console' };
+      return await platform.steam.addConsoleShortcut(console);
+    } catch (e) { return { ok: false, message: friendly(e) }; }
+  }
+  async steamInstallDeckLayout() {
+    try { return await platform.steam.installDeckLayout(); } catch (e) { return { ok: false, message: friendly(e) }; }
+  }
   async steamAddCloudShortcut(titleId: string) {
     let title: CloudTitle | undefined;
     try { title = (await this.cloudTitles()).find((t) => t.titleId === titleId); } catch (e) { return { ok: false, message: friendly(e) }; }

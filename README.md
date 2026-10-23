@@ -5,151 +5,240 @@
 <h1 align="center">Xenith</h1>
 
 <p align="center">
-  Открытый клиент Xbox Remote Play и Xbox Cloud Gaming для Windows 11 и Steam Deck.<br>
-  Русский и английский интерфейс, управление геймпадом, честная статистика потока.
+  An open-source Xbox Remote Play and Xbox Cloud Gaming client for Windows 11 and Steam Deck.<br>
+  English and Russian interfaces, gamepad navigation, and measured stream statistics.
 </p>
 
 <p align="center">
-  <b>Русский</b> · <a href="README.en.md">English</a>
+  <b>English</b> · <a href="README.ru.md">Русский</a>
 </p>
 
-![Главный экран](docs/images/home.png)
+![Home screen in English](docs/images/home-en.png)
 
-## Что умеет
+## Features
 
-- **Remote Play со своей Xbox.** Находит консоль в аккаунте, будит её из режима ожидания и подключается одной кнопкой. Видео 1080p60, H.264 Main, около 16–18 Мбит/с по локальной сети.
-- **Облачные игры Game Pass Ultimate.** Библиотека с поиском, подборками, русскими названиями и обложками, очередь на сервер с оценкой времени.
-- **Честные цифры.** Счётчик показывает реальное разрешение входящего кадра, битрейт, задержку сети, буфер, время декодирования и потери. Если консоль отдаёт 1080p, Xenith не напишет «1440p».
-- **Профили.** «Минимальная задержка» (буфер видео около 3 мс), «Качество изображения» (сглаживающий буфер и чёткость), «Экономия батареи» для Steam Deck.
-- **Картинка.** Повышение чёткости (CAS), масштабирование FSR 1.0, яркость, контраст, насыщенность, режимы заполнения экрана. Всё отключается.
-- **Управление.** Навигация геймпадом по всему приложению. View + Menu: короткое нажатие — кнопка Xbox, удержание — меню Xenith. Мёртвая зона, вибрация и вибрация курков, мышь и клавиатура.
-- **Steam.** Ярлык Xenith и ярлыки облачных игр в библиотеке Steam с обложками, запуск из игрового режима Steam Deck.
-- **Flydigi и X-Haptics.** Диагностика контроллера, Flydigi Space Station и игрового звука, режим «Мост контроллера»: картинка на телевизоре от Xbox, а ПК передаёт ввод и звук для X-Haptics.
-- **Надёжность.** Автоматическое переподключение после обрыва (картинка возвращается примерно за 9 секунд), токены в защищённом хранилище ОС, никаких токенов в логах.
+- Remote Play from your Xbox at up to 1440p. Find a console linked to your account, wake it from standby, and connect. Choose Auto, 1440p, 1080p, or 720p in the streaming settings.
+- Xbox Cloud Gaming. Browse and search the Game Pass Ultimate catalogue, view cover art, and see queue estimates when servers are busy.
+- Stream statistics. See the received resolution, bitrate, network round-trip time, video buffer, decode time, and packet loss.
+- Streaming profiles. Choose "Lowest latency", "Picture quality", or "Battery saver".
+- Picture controls. Adjust CAS sharpening, FSR 1.0 upscaling, brightness, contrast, saturation, and how the video fits the window.
+- Gamepad navigation. Use a gamepad throughout the app. Tap View + Menu for the Xbox button or hold them to open the Xenith menu. Configure stick dead zones, rumble, and trigger rumble.
+- Steam integration. Add Xenith and cloud game shortcuts to your Steam library with artwork.
+- Flydigi and X-Haptics diagnostics. Check the controller, Flydigi Space Station, and game audio. Controller bridge mode hides video on the PC while forwarding input and playing audio for X-Haptics. The Xbox supplies the TV picture over HDMI.
+- Automatic reconnection. A local hardware test restored video about nine seconds after a dropped connection.
 
-## Скриншоты
+## Screenshots
 
-| Подключение | Во время игры |
+New installations use English. Select a language in Settings > Interface > Language. Existing installations keep their saved choice. All screenshots on this page show the English interface.
+
+| Connecting | In-game menu |
 |---|---|
-| ![Подключение](docs/images/connecting.png) | ![Меню во время игры](docs/images/stream.png) |
+| ![Connecting](docs/images/connecting-en.png) | ![In-game menu](docs/images/stream-en.png) |
 
-| Настройки стриминга | X-Haptics |
+| Streaming settings | X-Haptics |
 |---|---|
-| ![Настройки](docs/images/settings-streaming.png) | ![X-Haptics](docs/images/settings-haptics.png) |
+| ![Streaming settings](docs/images/settings-streaming-en.png) | ![X-Haptics](docs/images/settings-haptics-en.png) |
 
-| Облако | Вход по коду |
+| Cloud games | Sign in with a code |
 |---|---|
-| ![Облако](docs/images/cloud.png) | ![Вход](docs/images/login.png) |
+| ![Cloud games](docs/images/cloud-en.png) | ![Sign-in screen](docs/images/login-en.png) |
 
-**Steam Deck**
-
-| Главный экран | Меню во время игры |
+| Steam Deck home | Steam Deck in-game menu |
 |---|---|
-| ![Deck: главный экран](docs/images/deck-home.png) | ![Deck: меню во время игры](docs/images/deck-stream.png) |
+| ![Steam Deck home](docs/images/deck-home-en.png) | ![Steam Deck in-game menu](docs/images/deck-stream-en.png) |
 
-Скриншоты сделаны на демонстрационных данных, поэтому вместо обложек игр — заглушки. Макеты интерфейса лежат в [docs/design](docs/design).
+| Steam integration | Steam integration on Deck |
+|---|---|
+| ![Steam settings](docs/images/settings-steam-en.png) | ![Steam settings on Deck](docs/images/deck-settings-steam-en.png) |
 
-## Установка
+Screenshots use demo data and placeholder game covers. Interface mockups are in [docs/design](docs/design).
+
+## Installation
 
 ### Windows 11
 
-1. Скачайте `Xenith-Setup-<версия>.exe` со страницы [Releases](../../releases) (или портативный `Xenith-<версия>-win-x64.zip`).
-2. Запустите установщик. Права администратора не нужны, приложение ставится для текущего пользователя.
-3. Сборка пока не подписана, поэтому Windows SmartScreen один раз спросит: «Подробнее» → «Выполнить в любом случае».
+1. Download `Xenith-Setup-<version>.exe` from [Releases](https://github.com/kirtarget/xenith/releases). A portable `Xenith-<version>-win-x64.zip` is also supported by the build configuration.
+2. Run the installer. It installs for the current user without administrator rights.
+3. The builds are unsigned. If Windows SmartScreen blocks the installer, select "More info", then "Run anyway".
 
-### Steam Deck (SteamOS)
+### Steam Deck and SteamOS
 
-Нативная Linux-сборка, без Proton. Подробно: [docs/platform/steam-deck.md](docs/platform/steam-deck.md).
+Xenith has a native Linux build. See the [Steam Deck notes](docs/platform/steam-deck.md) for setup details and troubleshooting.
 
-1. В режиме рабочего стола скачайте `Xenith-<версия>-x86_64.AppImage`, в свойствах файла разрешите запуск.
-2. Добавьте его в Steam: «Добавить стороннюю игру» или кнопкой «Добавить в Steam» в настройках Xenith. Proton для ярлыка не включайте.
-3. Steam Input оставьте включённым с шаблоном «Геймпад»: тогда кнопки Deck видны как обычный Xbox-контроллер.
+1. In Desktop Mode, download `Xenith-<version>-linux-x64.AppImage` and allow it to run as a program in its file properties.
+2. Add it to Steam with "Add a Non-Steam Game" or the "Add now" button in Xenith's Steam settings. Leave Proton disabled for the shortcut.
+3. Keep Steam Input enabled with the "Gamepad" template so the Deck controls appear as an Xbox controller.
+
+The launcher reached the sign-in screen on a Steam Deck OLED. A later fix for an endless Gaming Mode loading screen still needs a hardware retest. Streaming and VA-API performance on the Deck have not been measured.
 
 ### macOS
 
-Конфигурация сборки есть (dmg и zip для Intel и Apple Silicon), собирается в GitHub Actions. Сборка не подписана и пока не проверялась на реальном Mac.
+The build configuration and GitHub Actions workflow include DMG and ZIP packages for Intel and Apple Silicon. The builds are unsigned and have not been tested on a real Mac.
 
-## Первый запуск
+## First run
 
-1. Нажмите «Войти». Откройте [microsoft.com/link](https://www.microsoft.com/link) на телефоне или компьютере, введите код из Xenith и войдите в аккаунт, к которому привязана Xbox. Пароль вводится на сайте Microsoft, Xenith его не видит.
-2. На Xbox включите удалённые функции: «Настройки» → «Устройства и подключения» → «Удалённые функции».
-3. Нажмите «Подключиться».
+1. Select "Sign in". Open [microsoft.com/link](https://www.microsoft.com/link) on your phone or computer, enter the code shown by Xenith, and sign in with the account linked to your Xbox. Enter your password only on Microsoft's website. Xenith does not receive it.
+2. On the Xbox, enable Settings > Devices & connections > Remote features.
+3. Select "Connect".
 
-## Управление во время игры
+Tokens use the operating system's secure storage on Windows and macOS. SteamOS and Linux without a working keyring use encrypted local files with a key protected by file permissions. See [secure-store.ts](src/main/secure-store.ts) for the storage implementation.
 
-| Действие | Геймпад | Клавиатура и мышь |
+## Controls while streaming
+
+| Action | Gamepad | Keyboard and mouse |
 |---|---|---|
-| Меню Xenith | Удерживать View + Menu ~0,6 с | Esc или F1, кнопка «Меню» в углу при движении мыши |
-| Кнопка Xbox | Коротко нажать View + Menu | «Нажать кнопку Xbox» в меню |
-| Полный экран | — | F11 или F10 |
-| Отключиться | Меню → «Отключиться» | Меню → «Отключиться» |
+| Open the Xenith menu | Hold View + Menu for about 0.6 seconds | Esc or F1, or select "Menu" after moving the mouse |
+| Press the Xbox button | Tap View + Menu together | F2 or "Press the Xbox button" in the menu |
+| Toggle full screen | Use the session menu | F11 or F10 |
+| Disconnect | Select "Disconnect" in the menu | Select "Disconnect" in the menu |
 
-## Аргументы запуска
+## Launch arguments
 
-| Аргумент | Что делает |
+| Argument | Effect |
 |---|---|
-| `--xhome` | Сразу подключиться к последней консоли |
-| `--xcloud=<titleId>` | Сразу запустить облачную игру (так работают ярлыки облачных игр в Steam) |
+| `--xhome` | Connect to the last used console, or the first available console |
+| `--xhome=<serverId>` | Connect to a specific console |
+| `--xcloud=<titleId>` | Start a cloud game, as used by cloud game shortcuts in Steam |
 
-## Что измерено на реальном оборудовании
+## Steam Deck integration
 
-Xbox Series X в локальной сети, ПК с Radeon RX 9070 XT. Полный журнал: [docs/TESTLOG.md](docs/TESTLOG.md).
+### My Xbox tile
 
-| Показатель | Значение |
+Sign in and select a console on the home screen. Open Settings > Steam and select "Add now" beside "My Xbox tile". Restart Steam to see the tile. It connects directly to that console with `--xhome=<serverId>`. You can add a separate tile for each console. Adding the same console again updates its existing shortcut.
+
+### Gyro and back buttons
+
+In Settings > Steam, select "Install template" beside "Steam Deck controls". Restart Steam. Open the controller settings for the Xenith or Xbox shortcut, select the current layout, open Templates, and apply "Xenith - Gyro and back buttons". Installation adds a template without replacing your selected layout.
+
+| Control | Action |
 |---|---|
-| Разрешение и частота | 1920×1080, 60 к/с |
-| Кодек | H.264 Main 4.2 (консоль не предлагает High и HEVC) |
-| Битрейт | 16–18 Мбит/с |
-| Декодирование | 0,3–0,4 мс на кадр, аппаратное |
-| Буфер видео | 2,6–2,8 мс («Минимальная задержка»), ~23 мс («Качество») |
-| От «Подключиться» до картинки | 7–10 с (консоль включена), ~19 с (из режима ожидания) |
-| Переподключение после обрыва | ~9 с |
-| 10 минут стрима | 0 потерь, память стабильна |
+| Gyro while the left trigger is pulled | Aim using the right stick |
+| L4 / R4 | Left / right stick click |
+| L5 / R5 | Xbox X / Y |
+| Right trackpad | Mouse; click is the left mouse button |
+| Left trackpad click | Right mouse button |
 
-## Честные ограничения
+The Xenith menu stays on View + Menu (hold) and the Xbox button on View + Menu (short press).
 
-- **1440p.** Microsoft тестирует Remote Play в 1440p только для части инсайдеров. На нашей консоли даже официальный клиент получает 1080p. Xenith уже запрашивает 1440p так же, как официальный клиент, и получит его, когда Microsoft включит превью.
-- **Битрейт выше ~18 Мбит/с** консоль не даёт: запросы на повышение она игнорирует. Ограничение битрейта вниз работает.
-- **Облако через VPN.** Если облачный трафик уходит в VPN-туннель, соединение может устанавливаться без видео. Исключите Xenith или серверы Xbox Cloud из туннеля.
-- **Flydigi Apex 6 Pro и X-Haptics** пока не проверены с реальным контроллером.
-- **Steam Deck**: запуск из игрового режима проверен на Steam Deck OLED; стрим и VA-API на Deck ещё не измерены. Ярлык из Steam запускает Xenith через `~/.local/share/xenith/steam-launch.sh` (обход ошибки GPU-процесса Chromium при запуске клиентом Steam).
+Adjust gyro sensitivity and activation in Steam Input. The gyro emulates a stick, so the game's stick sensitivity and dead zone affect aiming. Separate cloud game shortcuts can use separate Steam layouts. Remote Play does not automatically identify the game running on the console.
 
-## Сборка из исходников
+### Sleep and reconnect
 
-Нужны Node.js 22+ и Git.
+When the Deck sleeps during a session, Xenith remembers the console or cloud title and stops local streaming. After waking, it waits for network connectivity and attempts to reconnect to the same target. Disconnecting or signing out cancels pending recovery.
+
+Sleeping the Deck does not guarantee that the remote game pauses. A cloud session may expire, and reconnecting may start a new session or queue.
+
+### Search keyboard
+
+In Gaming Mode, focusing the cloud search field or pressing Y requests Steam's on-screen keyboard. If it does not appear, press Steam + X. This integration applies to Xenith's search field; it does not automatically detect text fields inside a streamed game.
+
+### Picture size on the Deck screen
+
+Xbox video uses 16:9, while the Deck screen is 16:10. Open the Xenith menu during streaming and change "Picture size" with left/right or A. Changes apply immediately, including with CAS sharpening or FSR upscaling.
+
+| Mode | Result on a 1280 x 800 Deck screen |
+|---|---|
+| Fit | Keeps the whole frame and its proportions, with 40-pixel bars above and below a 16:9 stream |
+| Fill | Fills the screen and crops about 5% from each side; game interface elements near the edges may be lost |
+| Stretch | Fills the screen without cropping by stretching the picture vertically by about 11% |
+
+Fit is the default. Xenith remembers the selected mode separately for each cloud game and restores it on the next connection. Other games keep their own choices. For Remote Play, this control changes the global picture setting. These modes do not change the stream resolution or create a wider field of view.
+
+The shortcut and recovery logic have automated checks. Template selection, gyro feel, keyboard visibility, and recovery after actual Deck sleep still need verification on hardware.
+
+## Hardware measurements
+
+These measurements used an Xbox Series X on a local network and a PC with a Radeon RX 9070 XT on October 22, 2026. They describe that setup. See the [test log](docs/TESTLOG.md) for methods and remaining checks.
+
+| Metric | Recorded value |
+|---|---|
+| Resolution and frame rate | 1920 x 1080 at 60 fps |
+| Codec | H.264 Main 4.2 |
+| Bitrate | About 16 to 18 Mbps |
+| Decode time | 0.3 to 0.4 ms per frame; hardware decoding inferred from GPU activity |
+| Video buffer | About 2.6 to 2.8 ms with "Lowest latency", about 23 ms with "Picture quality" |
+| Connection to first frame | About 7 to 10 seconds with the console on, about 19 seconds from standby |
+| Reconnection after a drop | About nine seconds |
+| 594-second sample | No packet loss or dropped frames; stable memory usage |
+
+A keepalive issue ended the 594-second run. The fix passed a shorter integrated session, but the full ten-minute test has not been repeated.
+
+## Known limitations
+
+- Xenith supports 1440p streaming. The hardware measurements above used a 1080p stream and do not describe the app's maximum resolution. Stream statistics show the resolution actually received.
+- The tested console ignored requests for bitrates above about 18 Mbps. Lower bitrate limits worked.
+- Cloud traffic routed through a VPN may connect without video. Excluding Xenith or the Xbox Cloud servers from the tunnel may help.
+- Flydigi Apex 6 Pro and X-Haptics still need testing with a physical controller.
+- Steam Deck Gaming Mode and macOS require the follow-up checks described above.
+
+## Build from source
+
+Install Node.js 22 or later and Git. The CI workflow uses Node.js 24.
 
 ```bash
-npm install
-node build.mjs          # main, preload и интерфейс → dist/
-npx electron .          # запуск
-npx tsc --noEmit        # проверка типов
-npx electron-builder --win nsis zip     # установщик Windows
+npm ci
+npm run typecheck
+npm run build
+npx electron .
 ```
 
-Тесты:
+Create a Windows installer and portable ZIP after building the app.
 
 ```bash
-node tools/core-test/run.mjs            # ядро: настройки, история, сессии, ICE
-node tools/platform-test/run-tests.mjs  # Steam VDF, appid, Deck, Flydigi
-node tools/stream-test/run-input-test.mjs  # ввод: комбинации, Guide, вибрация
+npx electron-builder --win nsis zip --publish never
 ```
 
-Linux и macOS собираются в GitHub Actions: [.github/workflows/build.yml](.github/workflows/build.yml).
+The [CI workflow](.github/workflows/build.yml) also defines Linux and macOS builds. Packaging requires a suitable host for the target operating system.
 
-## Как устроено
+Run the automated checks.
 
-- **Electron** (Chromium WebRTC): аппаратное декодирование и геймпады из коробки, одна кодовая база для Windows, SteamOS и macOS. Почему не Tauri и не нативный клиент: [docs/adr/0001-stack-electron.md](docs/adr/0001-stack-electron.md).
-- `src/main` — вход в Microsoft и Xbox Live, REST-API сессий xHome и xCloud, каталог Game Pass, настройки, история, журналы.
-- `src/main/platform` — режимы GPU, VA-API, Steam Deck, ярлыки Steam, диагностика Flydigi.
-- `src/renderer` — интерфейс на React, навигация геймпадом, русский и английский.
-- `src/renderer/stream` — стрим-движок: WebRTC, статистика, профили, чёткость, ввод, переподключение.
-- `src/shared` — общий контракт между частями.
+```bash
+node tools/core-test/run.mjs
+node tools/platform-test/run-tests.mjs
+node tools/stream-test/run-input-test.mjs
+```
 
-## Благодарности и лицензия
+On a desktop session, verify Steam shortcut files, artwork, and template installation in an isolated temporary Steam directory. This does not modify your Steam library.
 
-Xenith распространяется под лицензией MIT. Знания о протоколе взяты из открытых проектов под MIT:
-[Greenlight](https://github.com/unknownskl/greenlight) и [xbox-xcloud-player](https://github.com/unknownskl/xbox-xcloud-player) (unknownskl),
-[XStreaming-desktop](https://github.com/Geocld/XStreaming-desktop) и [xstreaming-player](https://github.com/Geocld/XStreaming-player) (Geocld; плеер включён в `vendor/` с нашими исправлениями),
-[better-xcloud](https://github.com/redphx/better-xcloud) (redphx).
+```bash
+node tools/platform-test/run-steam-smoke.mjs
+```
 
-Xenith не связан с Microsoft и Xbox. Xbox — торговая марка Microsoft.
+Check live Fit/Fill/Stretch changes with the real FSR WebGL pipeline and a generated local video source.
+
+```bash
+node tools/ui-preview/check-fsr.mjs
+```
+
+Preview and check the English interface on desktop and Steam Deck layouts with fixture data.
+
+```bash
+node tools/ui-preview/build.mjs
+npx electron tools/ui-preview/capture.cjs --lang=en --check --sizes=1440x900,deck
+```
+
+## Architecture
+
+Xenith uses Electron, Chromium WebRTC, and React. See the [stack decision](docs/adr/0001-stack-electron.md) for the reasoning.
+
+| Directory | Responsibility |
+|---|---|
+| `src/main` | Microsoft and Xbox Live sign-in, Remote Play and cloud session APIs, game catalogue, settings, history, and logs |
+| `src/main/platform` | GPU configuration, VA-API, Steam Deck detection, Steam shortcuts, and Flydigi diagnostics |
+| `src/renderer` | React interface, gamepad navigation, and English and Russian translations |
+| `src/renderer/stream` | WebRTC streaming, statistics, profiles, picture processing, input, and reconnection |
+| `src/shared` | Shared types and contracts |
+
+## Contributing
+
+Project changes must include matching README updates. Keep [AGENTS.md](AGENTS.md) and [CLAUDE.md](CLAUDE.md) identical. CI checks their contents with `node tools/check-agent-docs.mjs`.
+
+## Credits and licence
+
+Xenith uses the [MIT licence](LICENSE). Its protocol implementation draws on these MIT-licensed projects.
+
+- [Greenlight](https://github.com/unknownskl/greenlight) and [xbox-xcloud-player](https://github.com/unknownskl/xbox-xcloud-player) by unknownskl.
+- [XStreaming-desktop](https://github.com/Geocld/XStreaming-desktop) and [xstreaming-player](https://github.com/Geocld/XStreaming-player) by Geocld. The player is included in `vendor/` with local fixes.
+- [better-xcloud](https://github.com/redphx/better-xcloud) by redphx.
+
+Xenith is not affiliated with Microsoft or Xbox. Xbox is a trademark of Microsoft.

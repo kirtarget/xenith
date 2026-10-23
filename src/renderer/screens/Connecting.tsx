@@ -25,6 +25,7 @@ export function Connecting() {
   if (!sess) return null;
   const c = s.connecting;
   const cloud = sess.kind === 'cloud';
+  const recovering = phase === 'connecting' && sess.engineState === 'reconnecting';
   const rail = liveRail(i18n, sess, now);
   const pad = pads.find(p => !p.isDeck) ?? pads[0];
   const st = settings.streaming;
@@ -47,8 +48,8 @@ export function Connecting() {
       ) : (
         <section className="hero hero--connecting" aria-labelledby="conn-title" aria-live="polite">
           <div className="hero__id">
-            <h1 id="conn-title" className="hero__title">{cloud ? c.titleCloud(sess.targetName) : c.titleHome(sess.targetName)}</h1>
-            <p className="muted hero__lead">{cloud ? c.bodyCloud : c.bodyHome}</p>
+            <h1 id="conn-title" className="hero__title">{recovering ? c.resumeTitle(sess.targetName) : cloud ? c.titleCloud(sess.targetName) : c.titleHome(sess.targetName)}</h1>
+            <p className="muted hero__lead">{recovering ? c.resumeBody : cloud ? c.bodyCloud : c.bodyHome}</p>
           </div>
           <Rail items={rail} label={c.stagesAria} live />
           <div className="hero__cta">

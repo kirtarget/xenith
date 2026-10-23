@@ -4,7 +4,7 @@ import { onXenithEvent, parseIpcError } from '../lib/api';
 import { makeI18n } from '../i18n';
 import { readGamepads, sameControllers } from '../lib/controllers';
 import { deepMerge, getState, setState, type InputKind, type Screen, type SettingsSection } from './store';
-import { connect, handleMainEvent, isStreamingVisible } from './session';
+import { cancelResume, connect, handleMainEvent, isStreamingVisible } from './session';
 
 const api = () => window.xenith;
 const strings = () => makeI18n(getState().settings.ui.lang).s;
@@ -95,6 +95,7 @@ export function onSettings(fn: (s: Settings) => void): () => void {
 function onSettingsChanged(s: Settings) { settingsListeners.forEach(f => f(s)); }
 
 export async function resetSettings(): Promise<void> {
+  cancelResume();
   const s = await api().settingsReset();
   confirmed = s;
   setState({ settings: s });
@@ -161,6 +162,7 @@ export async function startLogin(): Promise<void> {
 }
 
 export async function signOut(): Promise<void> {
+  cancelResume();
   await api().signOut();
   setState({ account: { signedIn: false, gamertag: null, avatarUrl: null, hasCloud: null }, consoles: null, cloud: null, history: null, sheet: null, login: { status: 'idle', code: null } });
 }
@@ -179,6 +181,7 @@ function onEvent(ev: XenithEventExt): void {
       break;
     case 'account': {
       const was = getState().account?.signedIn;
+      if (!ev.account.signedIn) cancelResume();
       setState({ account: ev.account });
       if (ev.account.signedIn && !was) void afterSignIn();
       break;

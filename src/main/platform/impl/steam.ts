@@ -3,21 +3,36 @@
 import { app, nativeImage, net } from 'electron';
 import { chmodSync, copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import type { CloudTitle, Settings, SteamStatus } from '../../../shared/api';
+import type { CloudTitle, ConsoleInfo, Settings, SteamStatus } from '../../../shared/api';
 import { listShortcuts, parseShortcuts, serializeShortcuts, ShortcutSpec, ShortcutView, upsertShortcut, xcloudTitleIdOf } from './shortcuts';
 import { findSteamRoot, gridDir, shortcutsPath, targetUserIds, userIds } from './steam-paths';
 import { processNames } from './sys';
+import { consoleShortcutSpec } from './console-shortcut';
+import { DECK_LAYOUT_TITLE, writeDeckLayout } from './deck-layout';
 
 export const LIBRARY_NAME = 'Xenith';
 export const CLOUD_PREFIX = 'Xenith: ';
 export const TAG = 'Xenith';
 
 const MSG = {
-  noSteam: 'Steam не найден.',
-  noUsers: 'В Steam нет ни одного пользователя. Войдите в Steam и повторите.',
-  doneRunning: 'Готово. Перезапустите Steam, чтобы увидеть ярлык.',
-  doneStopped: 'Готово. Ярлык появится при следующем запуске Steam.',
-  failed: (e: string) => `Не удалось записать ярлык: ${e}`,
+  en: {
+    noSteam: 'Steam was not found.',
+    noUsers: 'No Steam users found. Sign in to Steam and try again.',
+    doneRunning: 'Done. Restart Steam to see the shortcut.',
+    doneStopped: 'Done. The shortcut will appear the next time you start Steam.',
+    failed: (e: string) => `Could not save the shortcut: ${e}`,
+    layoutDone: `Template installed. Restart Steam, then select "${DECK_LAYOUT_TITLE}" in Controller settings > current layout > Templates.`,
+    layoutFailed: (e: string) => `Could not install the controller template: ${e}`,
+  },
+  ru: {
+    noSteam: 'Steam не найден.',
+    noUsers: 'В Steam нет ни одного пользователя. Войдите в Steam и повторите.',
+    doneRunning: 'Готово. Перезапустите Steam, чтобы увидеть ярлык.',
+    doneStopped: 'Готово. Ярлык появится при следующем запуске Steam.',
+    failed: (e: string) => `Не удалось записать ярлык: ${e}`,
+    layoutDone: `Шаблон установлен. Перезапустите Steam и выберите «${DECK_LAYOUT_TITLE}» в настройках контроллера > текущая раскладка > Шаблоны.`,
+    layoutFailed: (e: string) => `Не удалось установить шаблон управления: ${e}`,
+  },
 };
 
 const quote = (p: string) => `"${p}"`;
@@ -94,16 +109,17 @@ export function createSteam(deps: SteamDeps = {}) {
   }
 
   async function forEachTarget(fn: (file: string, uid: string, root: string) => void): Promise<{ ok: boolean; message: string }> {
+    const msg = MSG[deps.getSettings?.()?.ui.lang ?? 'en'];
     const root = await findSteamRoot();
-    if (!root) return { ok: false, message: MSG.noSteam };
+    if (!root) return { ok: false, message: msg.noSteam };
     const users = await targetUserIds(root);
-    if (!users.length) return { ok: false, message: MSG.noUsers };
+    if (!users.length) return { ok: false, message: msg.noUsers };
     try {
       for (const uid of users) fn(shortcutsPath(root, uid), uid, root);
     } catch (e: any) {
-      return { ok: false, message: MSG.failed(e?.message ?? String(e)) };
+      return { ok: false, message: msg.failed(e?.message ?? String(e)) };
     }
-    return { ok: true, message: (await isRunning()) ? MSG.doneRunning : MSG.doneStopped };
+    return { ok: true, message: (await isRunning()) ? msg.doneRunning : msg.doneStopped };
   }
 
   function librarySpec(): ShortcutSpec {
@@ -159,6 +175,31 @@ export function createSteam(deps: SteamDeps = {}) {
     return res;
   }
 
+  async function addConsoleShortcut(console: ConsoleInfo) {
+    const spec = consoleShortcutSpec(console, xenithLaunchTarget());
+    const targets: Array<{ dir: string; appid: number }> = [];
+    const res = await forEachTarget((file, uid, root) => {
+      const doc = readDoc(file);
+      const { appid } = upsertShortcut(doc, spec, (s) => isOurs(s) && s.launchOptions.split(/\s+/).includes(`--xhome=${console.serverId}`));
+      writeDoc(file, serializeShortcuts(doc));
+      targets.push({ dir: gridDir(root, uid), appid });
+    });
+    if (res.ok) for (const target of targets) writeConsoleArtwork(target.dir, target.appid);
+    return res;
+  }
+
+  async function installDeckLayout() {
+    const msg = MSG[deps.getSettings?.()?.ui.lang ?? 'en'];
+    const root = await findSteamRoot();
+    if (!root) return { ok: false, message: msg.noSteam };
+    try {
+      writeDeckLayout(root);
+      return { ok: true, message: msg.layoutDone };
+    } catch (e: any) {
+      return { ok: false, message: msg.layoutFailed(e?.message ?? String(e)) };
+    }
+  }
+
   function artworkEnabled() {
     return (deps.getSettings?.()?.steam.artworkSource ?? 'xcloud') !== 'none';
   }
@@ -182,7 +223,7 @@ export function createSteam(deps: SteamDeps = {}) {
     return [...ids];
   }
 
-  return { status, addLibraryShortcut, addCloudShortcut, resyncArtwork, shortcutTitleIds };
+  return { status, addLibraryShortcut, addCloudShortcut, addConsoleShortcut, installDeckLayout, resyncArtwork, shortcutTitleIds };
 }
 
 // ─── artwork ───
@@ -194,6 +235,23 @@ export const GRID_SLOTS = [
   { suffix: '_hero', w: 1920, h: 620, src: 'hero' as const },
   { suffix: '', w: 920, h: 430, src: 'hero' as const },
 ];
+
+function writeConsoleArtwork(dir: string, appid: number) {
+  const icon = nativeImage.createFromPath(join(__dirname, 'icon.png'));
+  if (icon.isEmpty()) throw new Error('Packaged Xenith icon was not found');
+  mkdirSync(dir, { recursive: true });
+  for (const slot of GRID_SLOTS) {
+    const side = Math.round(Math.min(slot.w, slot.h) * 0.55);
+    const image = icon.resize({ width: side, height: side, quality: 'best' });
+    const pixels = Buffer.alloc(slot.w * slot.h * 4);
+    for (let i = 0; i < pixels.length; i += 4) pixels.set([0x18, 0x10, 0x0b, 0xff], i);
+    const source = image.toBitmap();
+    const x = Math.floor((slot.w - side) / 2), y = Math.floor((slot.h - side) / 2);
+    for (let row = 0; row < side; row++) source.copy(pixels, ((y + row) * slot.w + x) * 4, row * side * 4, (row + 1) * side * 4);
+    const art = nativeImage.createFromBitmap(pixels, { width: slot.w, height: slot.h });
+    writeFileSync(join(dir, `${appid >>> 0}${slot.suffix}.jpg`), art.toJPEG(90));
+  }
+}
 
 async function fetchImage(url: string): Promise<Electron.NativeImage | null> {
   try {

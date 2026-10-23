@@ -9,6 +9,7 @@ import { AuthError } from './xbox-auth';
 import { GssvError } from './xhome-api';
 import { ipcError, SessionFail, toSessionError } from './errors';
 import { logWarn } from './log';
+import { showSteamKeyboard } from './steam-keyboard';
 
 type Invokable = Exclude<keyof XenithApi, 'on' | 'window' | 'sessionReport' | 'sessionStage'>;
 type WindowMethod = keyof XenithApi['window'];
@@ -63,11 +64,14 @@ export function registerIpc(core: XenithCore, getWindow: () => BrowserWindow | n
     sessionStop: (id, reason) => core.sessionStop(id, reason),
     steamStatus: () => core.steamStatus(),
     steamAddLibraryShortcut: () => core.steamAddLibraryShortcut(),
+    steamAddConsoleShortcut: (serverId) => core.steamAddConsoleShortcut(serverId),
+    steamInstallDeckLayout: () => core.steamInstallDeckLayout(),
     steamAddCloudShortcut: (titleId) => core.steamAddCloudShortcut(String(titleId)),
     steamResyncArtwork: () => core.steamResyncArtwork(),
     hapticsDiagnostics: () => core.hapticsDiagnostics(),
     gpuStatus: () => core.gpuStatus(),
     audioOutputs: () => core.audioOutputs(),
+    showSteamKeyboard: () => showSteamKeyboard(),
     openExternal: async (url) => {
       if (!isAllowedExternal(url)) throw new Error('URL not allowed');
       await shell.openExternal(url);

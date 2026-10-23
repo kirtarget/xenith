@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { HudCorner, Settings, StreamProfile, StreamStats } from '../../shared/api';
+import type { HudCorner, Settings, StreamProfile, StreamStats, VideoFit } from '../../shared/api';
+import { fitForTarget, fitPatch } from '../../shared/video-fit';
 import { Button, cx, Segmented, Slider, Toggle } from '../components/controls';
 import { useI18n, type I18n } from '../i18n';
 import { useNow } from '../lib/view';
@@ -131,9 +132,11 @@ function SidePanel() {
   const vib = !settings.controllers.vibration ? st.vibrationOff : sess.lastRumble && Date.now() - sess.lastRumble.at < 120000 ? st.vibrationWorks : st.vibrationIdle;
   const profiles = deck || settings.streaming.profile === 'battery' ? PROFILES : PROFILES.slice(0, 2);
   const setVideo = (p: Partial<Settings['video']>) => updateSettings({ video: p });
+  const fit = fitForTarget(settings, sess);
 
   if (deck) {
     const hudCycle: Settings['video']['hud'][] = ['off', 'compact', 'full'];
+    const fitCycle: VideoFit[] = ['contain', 'cover', 'fill'];
     return (
       <aside ref={ref} className="spanel spanel--deck" aria-label={st.menuAria}>
         <h1 className="spanel__title">{sess.targetName}</h1>
@@ -145,6 +148,11 @@ function SidePanel() {
           updateSettings({ streaming: { profile: PROFILES[(i + d + PROFILES.length) % PROFILES.length] } });
         }} />
         <CycleRow label={st.sharpness} value={st.sharpnessValue(settings.video.sharpness)} onStep={d => setVideo({ sharpness: Math.min(10, Math.max(0, settings.video.sharpness + d)) })} />
+        <CycleRow navId="sp-fit" label={s.settings.video.fit} value={s.settings.video.fitOpts[fit]} onStep={d => {
+          const next = fitCycle[(fitCycle.indexOf(fit) + d + fitCycle.length) % fitCycle.length];
+          updateSettings(fitPatch(settings, sess, next));
+        }} />
+        <p className="tiny muted">{st.fitHelp[fit]} {sess.kind === 'cloud' ? st.fitPerGame : st.fitGlobal}</p>
         <CycleRow label={st.hudToggle} value={st.hudMode[settings.video.hud]} onStep={d => {
           const i = hudCycle.indexOf(settings.video.hud);
           setVideo({ hud: hudCycle[(i + d + hudCycle.length) % hudCycle.length] });
@@ -199,7 +207,7 @@ function SidePanel() {
   );
 }
 
-function CycleRow({ label, value, onStep }: { label: string; value: string; onStep: (d: 1 | -1) => void }) {
+function CycleRow({ label, value, onStep, navId }: { label: string; value: string; onStep: (d: 1 | -1) => void; navId?: string }) {
   const ref = useRef<HTMLButtonElement>(null);
   const cb = useRef(onStep);
   cb.current = onStep;
@@ -211,7 +219,7 @@ function CycleRow({ label, value, onStep }: { label: string; value: string; onSt
     return () => el.removeEventListener('navadjust', h);
   }, []);
   return (
-    <button ref={ref} type="button" className="dlist dlist--kv" data-nav="" data-nav-lr="" onClick={() => cb.current(1)}>
+    <button ref={ref} type="button" className="dlist dlist--kv" data-nav="" data-nav-lr="" data-nav-id={navId} onClick={() => cb.current(1)}>
       <span>{label}</span>
       <span className="dlist__value"><span aria-hidden className="muted">‹</span>{value}<span aria-hidden className="muted">›</span></span>
     </button>

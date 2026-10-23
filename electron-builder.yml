@@ -45,10 +45,10 @@ nsis:
   createStartMenuShortcut: true
   shortcutName: Xenith
   menuCategory: false
-  installerLanguages: [ru_RU, en_US]
+  installerLanguages: [en_US, ru_RU]
   multiLanguageInstaller: true
   displayLanguageSelector: false        # picks Russian/English from the Windows UI language
-  language: "1049"
+  language: "1033"
   installerIcon: build/icon.ico
   uninstallerIcon: build/icon.ico
   deleteAppDataOnUninstall: false

@@ -22,6 +22,7 @@ let steamCache: SteamStatus | null = null;
 export function Cloud() {
   const { s } = useI18n();
   const deck = useApp(x => x.deck);
+  const platform = useApp(x => x.platform);
   const account = useApp(x => x.account);
   const titles = useApp(x => x.cloud);
   const failed = useApp(x => x.cloudFailed);
@@ -33,6 +34,23 @@ export function Cloud() {
   const [open, setOpen] = useState<CloudTitle | null>(null);
   const [steam, setSteam] = useState<SteamStatus | null>(steamCache);
   const searchRef = useRef<HTMLInputElement>(null);
+  const keyboardRequest = useRef({ focused: false, pending: false, at: -Infinity });
+
+  const showSearchKeyboard = async (force = false) => {
+    if (platform?.os !== 'linux' || !platform.isSteamDeck || !platform.isGamescope) return;
+    const request = keyboardRequest.current;
+    if (request.pending || (!force && request.focused) || performance.now() - request.at < 500) return;
+    request.focused = true;
+    request.pending = true;
+    request.at = performance.now();
+    try {
+      if (!await window.xenith.showSteamKeyboard()) toast(s.cloud.keyboardFallback, 'bad');
+    } catch {
+      toast(s.cloud.keyboardFallback, 'bad');
+    } finally {
+      request.pending = false;
+    }
+  };
 
   useEffect(() => { void loadCloud(); }, []);
   useEffect(() => {
@@ -65,7 +83,7 @@ export function Cloud() {
   };
 
   useNavLayer({
-    y: () => { focusEl(searchRef.current); return true; },
+    y: () => { focusEl(searchRef.current); void showSearchKeyboard(true); return true; },
     x: () => { const t = focusedTitle(); if (t && !t.inSteam && steam?.installed) void addToSteam(t); return true; },
     b: () => { if (q) { setQ(''); return true; } go('home'); return true; },
   });
@@ -109,7 +127,21 @@ export function Cloud() {
             placeholder={s.cloud.searchPh}
             value={q}
             onChange={e => setQ(e.currentTarget.value)}
-            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); (e.currentTarget as HTMLInputElement).blur(); } }}
+            onFocus={() => void showSearchKeyboard()}
+            onClick={() => void showSearchKeyboard(true)}
+            onBlur={e => {
+              // Steam's overlay can blur the page without moving focus to another app element.
+              if (e.relatedTarget) keyboardRequest.current.focused = false;
+            }}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                keyboardRequest.current.focused = false;
+                keyboardRequest.current.at = -Infinity;
+                e.currentTarget.blur();
+              }
+            }}
           />
         </label>
       </header>

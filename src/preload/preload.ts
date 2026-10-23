@@ -36,12 +36,15 @@ const api: XenithApiFull = {
 
   steamStatus: () => invoke('steamStatus'),
   steamAddLibraryShortcut: () => invoke('steamAddLibraryShortcut'),
+  steamAddConsoleShortcut: (serverId) => invoke('steamAddConsoleShortcut', serverId),
+  steamInstallDeckLayout: () => invoke('steamInstallDeckLayout'),
   steamAddCloudShortcut: (titleId) => invoke('steamAddCloudShortcut', titleId),
   steamResyncArtwork: () => invoke('steamResyncArtwork'),
 
   hapticsDiagnostics: () => invoke('hapticsDiagnostics'),
   gpuStatus: () => invoke('gpuStatus'),
   audioOutputs: () => invoke('audioOutputs'),
+  showSteamKeyboard: () => invoke('showSteamKeyboard'),
 
   window: {
     toggleFullscreen: () => invoke('window.toggleFullscreen'),
